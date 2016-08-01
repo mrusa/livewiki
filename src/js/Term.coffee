@@ -1,12 +1,12 @@
 Livewiki = require './Livewiki.coffee'
 Container = require './Container.coffee'
+parser = new DOMParser()
 
 class Term extends Livewiki
   constructor: (link) ->
     super()
 
     @link = link
-    @parser = new DOMParser()
     @term = {}
     @container = new Container()
 
@@ -21,7 +21,7 @@ class Term extends Livewiki
         if (request.status == 200)
 
           resp = request.responseText;
-          response = @parser.parseFromString(resp, 'text/html')
+          response = parser.parseFromString(resp, 'text/html')
 
           @term = {
             href: @link,
