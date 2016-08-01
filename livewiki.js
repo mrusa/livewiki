@@ -190,6 +190,10 @@
 	    return new Promise((function(_this) {
 	      return function(resolve, reject) {
 	        var request;
+	        if (_this.html_element()) {
+	          resolve(_this);
+	          return false;
+	        }
 	        request = new XMLHttpRequest();
 	        request.open('GET', _this.link, true);
 	        request.onload = function() {
@@ -202,7 +206,7 @@
 	            if (_this.displayed) {
 	              _this.update_html();
 	            }
-	            return resolve(_this.term);
+	            return resolve(_this);
 	          } else {
 	            return reject(Error('Term didn\'t load successfully; error code: ' + request.statusText));
 	          }
@@ -216,6 +220,9 @@
 	  };
 
 	  Term.prototype.display = function(e) {
+	    if (this.html_element()) {
+	      return false;
+	    }
 	    if (e.which === 91 || e.which === 93 || e.ctrlKey) {
 	      return this.append();
 	    }

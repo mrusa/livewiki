@@ -26,6 +26,5 @@ ready ->
       ), (Error) ->
         console.log Error
 
-    #
     element.addEventListener 'mouseout', (e) ->
       document.removeEventListener 'keydown', term.display

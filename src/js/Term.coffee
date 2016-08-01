@@ -14,8 +14,13 @@ class Term extends Livewiki
     @container = new Container()
 
   preload: =>
-    # TODO: check if the term is already displayed
+
     new Promise( (resolve, reject) =>
+
+      if @html_element()
+        resolve(@)
+        return false
+
       request = new XMLHttpRequest();
       request.open('GET', @link, true);
 
@@ -30,7 +35,7 @@ class Term extends Livewiki
 
           @update_html() if(@displayed)
 
-          resolve(@term)
+          resolve(@)
 
         else
           reject(Error('Term didn\'t load successfully; error code: ' + request.statusText))
@@ -42,6 +47,8 @@ class Term extends Livewiki
     )
 
   display: (e) =>
+    return false if @html_element()
+
     @append() if (e.which == 91 || e.which == 93 || e.ctrlKey)
 
   append: () ->
