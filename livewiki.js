@@ -216,7 +216,7 @@
 	  };
 
 	  Term.prototype.display = function(e) {
-	    if (e.which === 91 || e.which === 93) {
+	    if (e.which === 91 || e.which === 93 || e.ctrlKey) {
 	      return this.append();
 	    }
 	  };

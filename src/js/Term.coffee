@@ -42,7 +42,7 @@ class Term extends Livewiki
     )
 
   display: (e) =>
-    @append() if (e.which == 91 || e.which == 93)
+    @append() if (e.which == 91 || e.which == 93 || e.ctrlKey)
 
   append: () ->
     @displayed = true
