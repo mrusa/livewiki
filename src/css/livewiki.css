@@ -1,0 +1,32 @@
+#livewiki a {
+	color: #666;
+	font-weight: normal;
+}
+
+#livewiki p {
+	color: #999;
+	line-height: 30px;
+	font-size: 15px;
+}
+
+#livewiki h1{
+	color: #0645ad;
+}
+
+#livewiki {
+	width: 700px;
+	height: auto;
+	position: fixed;
+	bottom: 0;
+	left: 50px;
+	background: #fff;
+	padding: 20px;
+	box-shadow: 0px -10px 125px rgba(0,0,0,.1);
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	z-index: 9999999;
+}
+
+.livewiki_term {
+
+}

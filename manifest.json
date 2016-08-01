@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "LiveWiki",
-  "description": "This extension shows a Google Image search result for the current page",
+  "description": "Retrieve content of links to other Wikipedia pages.",
   "version": "1.0",
   "permissions": [
     "tabs"
@@ -10,8 +10,8 @@
   "content_scripts": [
     {
       "matches": ["*://*.wikipedia.org/*"],
-      "js": ["wiki_crawler.js"],
-      "css": ["wiki_crawler.css"]
+      "js": ["livewiki.js"],
+      "css": ["src/css/livewiki.css"]
     }
   ]
 }
