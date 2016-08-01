@@ -5,11 +5,11 @@
 
 #livewiki p {
 	color: #999;
-	line-height: 30px;
+	line-height: 1.5em;
 	font-size: 15px;
 }
 
-#livewiki h1{
+#livewiki h1 {
 	color: #0645ad;
 }
 
@@ -27,6 +27,6 @@
 	z-index: 9999999;
 }
 
-.livewiki_term {
-
+#livewiki:empty {
+	display: none;
 }
