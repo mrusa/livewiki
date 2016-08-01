@@ -33,7 +33,7 @@ class Term extends Livewiki
           resolve(@term)
 
         else
-          reject(Error('Term didn\'t load successfully; error code:' + request.statusText))
+          reject(Error('Term didn\'t load successfully; error code: ' + request.statusText))
 
       request.onerror = ->
         reject(Error("There was a network error."))
