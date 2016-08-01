@@ -7,12 +7,14 @@ class Term extends Livewiki
     super()
 
     @link = link
+    @loaded = false;
+    @displayed = false;
+
     @term = {}
     @container = new Container()
 
   preload: =>
     # TODO: check if the term is already displayed
-
     new Promise( (resolve, reject) =>
       request = new XMLHttpRequest();
       request.open('GET', @link, true);
@@ -29,8 +31,9 @@ class Term extends Livewiki
             paragraph: response.querySelector(@options.selectors.paragraph).innerHTML
           }
 
+          @update_html() if(@displayed)
+
           resolve(@term)
-          # todo: check if term gets displayed already, if yes => update contents
 
         else
           reject(Error('Term didn\'t load successfully; error code:' + request.statusText))
@@ -45,10 +48,16 @@ class Term extends Livewiki
     @append() if (e.which == 91 || e.which == 93)
 
   append: () ->
+    @displayed = true
     @container.appendChild(@to_html())
 
   remove_term: () =>
     document.querySelector('[data-href="' + encodeURIComponent(@term.href) + '"]').remove()
+
+  update_html: () =>
+    term_html = document.querySelector('[data-href="' + encodeURIComponent(@link) + '"]')
+    term_html.querySelector('h1').innerHTML = @headline
+    term_html.querySelector('p').innerHTML = @paragraph
 
   to_html: () =>
     fragment = document.createDocumentFragment();
