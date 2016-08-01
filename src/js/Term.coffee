@@ -25,11 +25,8 @@ class Term extends Livewiki
           resp = request.responseText;
           response = parser.parseFromString(resp, 'text/html')
 
-          @term = {
-            href: @link,
-            headline: response.querySelector(@options.selectors.heading).textContent,
-            paragraph: response.querySelector(@options.selectors.paragraph).innerHTML
-          }
+          @headline = response.querySelector(@options.selectors.heading).textContent
+          @paragraph = response.querySelector(@options.selectors.paragraph).innerHTML
 
           @update_html() if(@displayed)
 
@@ -52,7 +49,7 @@ class Term extends Livewiki
     @container.appendChild(@to_html())
 
   remove_term: () =>
-    document.querySelector('[data-href="' + encodeURIComponent(@term.href) + '"]').remove()
+    document.querySelector('[data-href="' + encodeURIComponent(@link) + '"]').remove()
 
   update_html: () =>
     term_html = document.querySelector('[data-href="' + encodeURIComponent(@link) + '"]')
@@ -63,12 +60,12 @@ class Term extends Livewiki
     fragment = document.createDocumentFragment();
 
     close_button = create_element('button', 'CLOSE')
-    headline = create_element('h1', @term.headline)
-    paragraph = create_element('p', @term.paragraph)
+    headline = create_element('h1', @headline)
+    paragraph = create_element('p', @paragraph)
     div = create_element('div', undefined, 'livewiki_term')
 
     close_button.addEventListener('click', @remove_term)
-    div.setAttribute('data-href', encodeURIComponent(@term.href))
+    div.setAttribute('data-href', encodeURIComponent(@link))
 
     fragment.appendChild(close_button);
     fragment.appendChild(headline);
