@@ -202,7 +202,7 @@
 	            resp = request.responseText;
 	            response = parser.parseFromString(resp, 'text/html');
 	            _this.headline = response.querySelector(_this.options.selectors.heading).textContent;
-	            _this.paragraph = response.querySelector(_this.options.selectors.paragraph).innerHTML;
+	            _this.paragraph = response.querySelector(_this.options.selectors.paragraph).textContent;
 	            if (_this.displayed) {
 	              _this.update_html();
 	            }
@@ -238,8 +238,8 @@
 	  };
 
 	  Term.prototype.update_html = function() {
-	    this.html_element().querySelector('h1').innerHTML = this.headline;
-	    return this.html_element().querySelector('p').innerHTML = this.paragraph;
+	    this.html_element().querySelector('h1').textContent = this.headline;
+	    return this.html_element().querySelector('p').textContent = this.paragraph;
 	  };
 
 	  Term.prototype.html_element = function() {
@@ -280,7 +280,7 @@
 	  var el;
 	  el = document.createElement(element);
 	  if (text !== void 0) {
-	    el.innerHTML = text;
+	    el.textContent = text;
 	  }
 	  if (css_class !== void 0) {
 	    el.classList.add(css_class);

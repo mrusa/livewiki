@@ -31,7 +31,7 @@ class Term extends Livewiki
           response = parser.parseFromString(resp, 'text/html')
 
           @headline = response.querySelector(@options.selectors.heading).textContent
-          @paragraph = response.querySelector(@options.selectors.paragraph).innerHTML
+          @paragraph = response.querySelector(@options.selectors.paragraph).textContent
 
           @update_html() if(@displayed)
 
@@ -59,8 +59,8 @@ class Term extends Livewiki
     @html_element().remove()
 
   update_html: () =>
-    @html_element().querySelector('h1').innerHTML = @headline
-    @html_element().querySelector('p').innerHTML = @paragraph
+    @html_element().querySelector('h1').textContent = @headline
+    @html_element().querySelector('p').textContent = @paragraph
 
   html_element: () =>
     return document.querySelector("[data-href='#{encodeURIComponent(@link)}']")
@@ -95,7 +95,7 @@ create_element = (element, text, css_class) ->
   el = document.createElement(element)
 
   if text != undefined
-    el.innerHTML = text
+    el.textContent = text
 
   if css_class != undefined
     el.classList.add css_class
