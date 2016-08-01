@@ -2,8 +2,6 @@ Livewiki = require './src/js/Livewiki.coffee'
 Container = require './src/js/Container.coffee'
 Term = require './src/js/Term.coffee'
 
-mouse_over_link = false;
-
 ready = (fn) ->
   if document.readyState != 'loading'
     fn()
@@ -18,8 +16,6 @@ ready ->
     term = '';
 
     element.addEventListener 'mouseover', (e) ->
-      mouse_over_link = true;
-
       link = e.target.getAttribute('href')
       term = new Term(link)
 
@@ -32,5 +28,4 @@ ready ->
 
     #
     element.addEventListener 'mouseout', (e) ->
-      mouse_over_link = false;
       document.removeEventListener 'keydown', term.display
