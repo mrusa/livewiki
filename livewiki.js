@@ -44,15 +44,13 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Container, Livewiki, Term, mouse_over_link, ready;
+	var Container, Livewiki, Term, ready;
 
 	Livewiki = __webpack_require__(1);
 
 	Container = __webpack_require__(2);
 
 	Term = __webpack_require__(3);
-
-	mouse_over_link = false;
 
 	ready = function(fn) {
 	  if (document.readyState !== 'loading') {
@@ -70,7 +68,6 @@
 	    term = '';
 	    element.addEventListener('mouseover', function(e) {
 	      var link;
-	      mouse_over_link = true;
 	      link = e.target.getAttribute('href');
 	      term = new Term(link);
 	      document.addEventListener('keydown', term.display);
@@ -79,7 +76,6 @@
 	      });
 	    });
 	    return element.addEventListener('mouseout', function(e) {
-	      mouse_over_link = false;
 	      return document.removeEventListener('keydown', term.display);
 	    });
 	  });
@@ -161,7 +157,7 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Container, Livewiki, Term, create_element, get_parent_element,
+	var Container, Livewiki, Term, create_element, get_parent_element, parser,
 	  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
@@ -170,17 +166,21 @@
 
 	Container = __webpack_require__(2);
 
+	parser = new DOMParser();
+
 	Term = (function(superClass) {
 	  extend(Term, superClass);
 
 	  function Term(link) {
 	    this.to_html = bind(this.to_html, this);
+	    this.update_html = bind(this.update_html, this);
 	    this.remove_term = bind(this.remove_term, this);
 	    this.display = bind(this.display, this);
 	    this.preload = bind(this.preload, this);
 	    Term.__super__.constructor.call(this);
 	    this.link = link;
-	    this.parser = new DOMParser();
+	    this.loaded = false;
+	    this.displayed = false;
 	    this.term = {};
 	    this.container = new Container();
 	  }
@@ -195,15 +195,15 @@
 	          var resp, response;
 	          if (request.status === 200) {
 	            resp = request.responseText;
-	            response = _this.parser.parseFromString(resp, 'text/html');
-	            _this.term = {
-	              href: _this.link,
-	              headline: response.querySelector(_this.options.selectors.heading).textContent,
-	              paragraph: response.querySelector(_this.options.selectors.paragraph).innerHTML
-	            };
+	            response = parser.parseFromString(resp, 'text/html');
+	            _this.headline = response.querySelector(_this.options.selectors.heading).textContent;
+	            _this.paragraph = response.querySelector(_this.options.selectors.paragraph).innerHTML;
+	            if (_this.displayed) {
+	              _this.update_html();
+	            }
 	            return resolve(_this.term);
 	          } else {
-	            return reject(Error('Term didn\'t load successfully; error code:' + request.statusText));
+	            return reject(Error('Term didn\'t load successfully; error code: ' + request.statusText));
 	          }
 	        };
 	        request.onerror = function() {
@@ -221,22 +221,30 @@
 	  };
 
 	  Term.prototype.append = function() {
+	    this.displayed = true;
 	    return this.container.appendChild(this.to_html());
 	  };
 
 	  Term.prototype.remove_term = function() {
-	    return document.querySelector('[data-href="' + encodeURIComponent(this.term.href) + '"]').remove();
+	    return document.querySelector('[data-href="' + encodeURIComponent(this.link) + '"]').remove();
+	  };
+
+	  Term.prototype.update_html = function() {
+	    var term_html;
+	    term_html = document.querySelector('[data-href="' + encodeURIComponent(this.link) + '"]');
+	    term_html.querySelector('h1').innerHTML = this.headline;
+	    return term_html.querySelector('p').innerHTML = this.paragraph;
 	  };
 
 	  Term.prototype.to_html = function() {
 	    var close_button, div, fragment, headline, paragraph;
 	    fragment = document.createDocumentFragment();
 	    close_button = create_element('button', 'CLOSE');
-	    headline = create_element('h1', this.term.headline);
-	    paragraph = create_element('p', this.term.paragraph);
+	    headline = create_element('h1', this.headline);
+	    paragraph = create_element('p', this.paragraph);
 	    div = create_element('div', void 0, 'livewiki_term');
 	    close_button.addEventListener('click', this.remove_term);
-	    div.setAttribute('data-href', encodeURIComponent(this.term.href));
+	    div.setAttribute('data-href', encodeURIComponent(this.link));
 	    fragment.appendChild(close_button);
 	    fragment.appendChild(headline);
 	    fragment.appendChild(paragraph);
