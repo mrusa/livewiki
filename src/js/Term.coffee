@@ -49,12 +49,14 @@ class Term extends Livewiki
     @container.appendChild(@to_html())
 
   remove_term: () =>
-    document.querySelector('[data-href="' + encodeURIComponent(@link) + '"]').remove()
+    @html_element().remove()
 
   update_html: () =>
-    term_html = document.querySelector('[data-href="' + encodeURIComponent(@link) + '"]')
-    term_html.querySelector('h1').innerHTML = @headline
-    term_html.querySelector('p').innerHTML = @paragraph
+    @html_element().querySelector('h1').innerHTML = @headline
+    @html_element().querySelector('p').innerHTML = @paragraph
+
+  html_element: () =>
+    return document.querySelector("[data-href='#{encodeURIComponent(@link)}']")
 
   to_html: () =>
     fragment = document.createDocumentFragment();

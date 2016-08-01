@@ -173,6 +173,7 @@
 
 	  function Term(link) {
 	    this.to_html = bind(this.to_html, this);
+	    this.html_element = bind(this.html_element, this);
 	    this.update_html = bind(this.update_html, this);
 	    this.remove_term = bind(this.remove_term, this);
 	    this.display = bind(this.display, this);
@@ -226,14 +227,16 @@
 	  };
 
 	  Term.prototype.remove_term = function() {
-	    return document.querySelector('[data-href="' + encodeURIComponent(this.link) + '"]').remove();
+	    return this.html_element().remove();
 	  };
 
 	  Term.prototype.update_html = function() {
-	    var term_html;
-	    term_html = document.querySelector('[data-href="' + encodeURIComponent(this.link) + '"]');
-	    term_html.querySelector('h1').innerHTML = this.headline;
-	    return term_html.querySelector('p').innerHTML = this.paragraph;
+	    this.html_element().querySelector('h1').innerHTML = this.headline;
+	    return this.html_element().querySelector('p').innerHTML = this.paragraph;
+	  };
+
+	  Term.prototype.html_element = function() {
+	    return document.querySelector("[data-href='" + (encodeURIComponent(this.link)) + "']");
 	  };
 
 	  Term.prototype.to_html = function() {
