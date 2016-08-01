@@ -5,7 +5,7 @@
   "description": "Retrieve content of links to other Wikipedia pages.",
   "version": "1.0",
   "permissions": [
-    "tabs"
+    "activeTab"
   ],
   "content_scripts": [
     {
