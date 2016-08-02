@@ -72,7 +72,7 @@ class Term extends Livewiki
   to_html: () =>
     fragment = document.createDocumentFragment();
 
-    close_button = create_element('button', 'X')
+    close_button = create_element('button', 'CLOSE')
     headline = create_element('h1', @headline)
     paragraph = create_element('p', @paragraph)
     div = create_element('div', undefined, 'livewiki_term')

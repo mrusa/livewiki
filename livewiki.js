@@ -294,7 +294,7 @@
 	  Term.prototype.to_html = function() {
 	    var close_button, div, fragment, headline, paragraph;
 	    fragment = document.createDocumentFragment();
-	    close_button = create_element('button', 'X');
+	    close_button = create_element('button', 'CLOSE');
 	    headline = create_element('h1', this.headline);
 	    paragraph = create_element('p', this.paragraph);
 	    div = create_element('div', void 0, 'livewiki_term');

@@ -1,32 +1,82 @@
-#livewiki a {
-	color: #666;
-	font-weight: normal;
-}
-
-#livewiki p {
-	color: #999;
-	line-height: 1.5em;
-	font-size: 15px;
-}
-
-#livewiki h1 {
-	color: #0645ad;
-}
-
 #livewiki {
 	width: 700px;
 	height: auto;
 	position: fixed;
 	bottom: 0;
-	left: 50px;
+	left: 50%;
+	transform: translateX(-50%);
 	background: #fff;
 	padding: 20px;
-	box-shadow: 0px -10px 125px rgba(0,0,0,.1);
+	box-shadow: 0px 0 6px rgba(0,0,0,.1);
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 	z-index: 9999999;
+	border: 1px solid #ECEEF1;
+	position: fixed;
+	-webkit-animation: colorchange .7s;
+}
+
+@keyframes colorchange
+{
+	0% {background: #fff;}
+	50%   {background: #fefefe;}
+	100% {background: #fff;}
+}
+
+@-webkit-keyframes colorchange
+{
+	0% {background: #fff;}
+	50%   {background: #fefefe;}
+	100% {background: #fff;}
+}
+
+#livewiki h1 {
+	color: #347bff;
+	font-weight: 100;
+	padding-bottom: 15px;
+	padding-top: 0;
+	font-size: 18px;
+	border-bottom: 1px solid rgba(44,62,80,.1);
+}
+
+#livewiki button{
+	border: none;
+	background: none;
+	color: rgba(52,123,255,.7);
+	padding: 4px 8px;
+	position: absolute;
+	right: 20px;
+	font-size: 10px;
+	font-weight: 500;
+	letter-spacing: 1px;
+	opacity: .6;
+	transition: .3s ease-in-out;
+}
+
+#livewiki button:hover{
+	opacity: 1;
+	cursor: pointer;
+}
+
+#livewiki button:focus{
+	outline: none;
+}
+
+#livewiki p {
+	color: #999;
+	line-height: 22px;
+	font-size: 13px;
+	font-weight: 500;
+	color: rgba(44,62,80,.6);
+	overflow: scroll;
+	height: 78px;
+	margin: 20px 0 0 0;
 }
 
 #livewiki:empty {
 	display: none;
+}
+
+::-webkit-scrollbar {
+    display: none;
 }
