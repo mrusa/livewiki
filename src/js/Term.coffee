@@ -59,8 +59,12 @@ class Term extends Livewiki
     @html_element().remove()
 
   update_html: () =>
-    @html_element().querySelector('h1').textContent = @headline
-    @html_element().querySelector('p').textContent = @paragraph
+    element = @html_element()
+
+    if element.querySelector('h1')
+      element.querySelector('h1').textContent = @headline
+    if element.querySelector('p')
+      element.querySelector('p').textContent = @paragraph
 
   html_element: () =>
     return document.querySelector("[data-href='#{encodeURIComponent(@link)}']")
@@ -82,7 +86,6 @@ class Term extends Livewiki
     div.appendChild(fragment);
 
     return div
-
 
 get_parent_element = (element, tag, css_class) ->
   while element.parentElement
