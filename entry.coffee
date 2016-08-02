@@ -10,6 +10,17 @@ ready = (fn) ->
 
 
 ready ->
+
+  document.addEventListener 'keyup', (e) =>
+    if e.which is 27
+      new Container().remove();
+
+  document.querySelector('body').addEventListener 'click', (e) ->
+    new Container().remove();
+    return false if e.target == container
+
+    container.remove();
+
   a_tags = document.querySelectorAll('a[href^="/wiki/"]:not(.new)')
 
   Array::forEach.call a_tags, (element, i) ->

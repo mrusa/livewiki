@@ -62,6 +62,20 @@
 
 	ready(function() {
 	  var a_tags;
+	  document.addEventListener('keyup', (function(_this) {
+	    return function(e) {
+	      if (e.which === 27) {
+	        return new Container().remove();
+	      }
+	    };
+	  })(this));
+	  document.querySelector('body').addEventListener('click', function(e) {
+	    new Container().remove();
+	    if (e.target === container) {
+	      return false;
+	    }
+	    return container.remove();
+	  });
 	  a_tags = document.querySelectorAll('a[href^="/wiki/"]:not(.new)');
 	  return Array.prototype.forEach.call(a_tags, function(element, i) {
 	    var term;
@@ -249,7 +263,7 @@
 	  Term.prototype.to_html = function() {
 	    var close_button, div, fragment, headline, paragraph;
 	    fragment = document.createDocumentFragment();
-	    close_button = create_element('button', 'CLOSE');
+	    close_button = create_element('button', 'X');
 	    headline = create_element('h1', this.headline);
 	    paragraph = create_element('p', this.paragraph);
 	    div = create_element('div', void 0, 'livewiki_term');
