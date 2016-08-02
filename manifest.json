@@ -8,10 +8,13 @@
     "activeTab"
   ],
   "icons": {
-    "16": "icons/16x16.png",
-    "32": "icons/32x32.png",
-    "48": "icons/48x48.png",
-    "128": "icons/128x128.png"
+    "16": "icons/black/16x16.png",
+    "32": "icons/black/32x32.png",
+    "48": "icons/black/48x48.png",
+    "128": "icons/black/128x128.png"
+  },
+  "browser_action": {
+    "default_icon": "icons/black/32x32.png"
   },
   "content_scripts": [
     {
