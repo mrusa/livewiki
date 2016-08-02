@@ -1,7 +1,7 @@
 default_options = {
   selectors: {
     heading: '#firstHeading',
-    paragraph: '#mw-content-text p'
+    paragraph: '#mw-content-text > p'
   }
 }
 
