@@ -17,9 +17,6 @@ ready ->
 
   document.querySelector('body').addEventListener 'click', (e) ->
     new Container().remove();
-    return false if e.target == container
-
-    container.remove();
 
   a_tags = document.querySelectorAll('a[href^="/wiki/"]:not(.new)')
 

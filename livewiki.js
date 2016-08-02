@@ -70,11 +70,7 @@
 	    };
 	  })(this));
 	  document.querySelector('body').addEventListener('click', function(e) {
-	    new Container().remove();
-	    if (e.target === container) {
-	      return false;
-	    }
-	    return container.remove();
+	    return new Container().remove();
 	  });
 	  a_tags = document.querySelectorAll('a[href^="/wiki/"]:not(.new)');
 	  return Array.prototype.forEach.call(a_tags, function(element, i) {
@@ -157,6 +153,11 @@
 	    }
 	    this.container_element.id = 'livewiki';
 	    document.querySelector('body').appendChild(this.container_element);
+	    this.container_element.addEventListener('click', (function(_this) {
+	      return function(e) {
+	        return e.stopPropagation();
+	      };
+	    })(this));
 	    return this.container_element;
 	  };
 

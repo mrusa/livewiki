@@ -12,6 +12,9 @@ class Container extends Livewiki
 
     document.querySelector('body').appendChild(@container_element)
 
+    @container_element.addEventListener 'click', (e) =>
+      e.stopPropagation()
+
     return @container_element;
 
 module.exports = Container
