@@ -2,19 +2,28 @@ Livewiki = require './Livewiki.coffee'
 
 class Container extends Livewiki
   constructor: () ->
-    return @find_or_create()
+    @container_element = '';
 
-  find_or_create: () ->
-    @container_element = document.querySelector('#livewiki')
-    @container_element = document.createElement('div') unless @container_element
-
-    @container_element.id = 'livewiki'
-
-    document.querySelector('body').appendChild(@container_element)
-
-    @container_element.addEventListener 'click', (e) =>
+    element = @find_or_create()
+    element.id = 'livewiki'
+    element.addEventListener 'click', (e) =>
       e.stopPropagation()
 
+    document.querySelector('body').appendChild(element)
+
+    return element;
+
+  find_or_create: () ->
+    @container_element = @find_element()
+    @container_element = document.createElement('div') unless @container_element
+
     return @container_element;
+
+  find_element: () =>
+    document.querySelector('#livewiki')
+
+  remove_container: () ->
+    container = @find_element()
+    container.remove() if container
 
 module.exports = Container

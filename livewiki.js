@@ -61,16 +61,17 @@
 	};
 
 	ready(function() {
-	  var a_tags;
+	  var a_tags, mouse_over_link;
+	  mouse_over_link = false;
 	  document.addEventListener('keyup', (function(_this) {
 	    return function(e) {
-	      if (e.which === 27) {
-	        return new Container().remove();
+	      if ((e.which === 27 || e.which === 91 || e.which === 93 || e.which === 17 || e.ctrlKey) && !mouse_over_link) {
+	        return Container.prototype.remove_container();
 	      }
 	    };
 	  })(this));
 	  document.querySelector('body').addEventListener('click', function(e) {
-	    return new Container().remove();
+	    return Container.prototype.remove_container();
 	  });
 	  a_tags = document.querySelectorAll('a[href^="/wiki/"]:not(.new)');
 	  return Array.prototype.forEach.call(a_tags, function(element, i) {
@@ -78,6 +79,7 @@
 	    term = '';
 	    element.addEventListener('mouseover', function(e) {
 	      var link;
+	      mouse_over_link = true;
 	      link = e.target.getAttribute('href');
 	      term = new Term(link);
 	      document.addEventListener('keydown', term.display);
@@ -86,6 +88,11 @@
 	      });
 	    });
 	    return element.addEventListener('mouseout', function(e) {
+	      setTimeout(((function(_this) {
+	        return function() {
+	          return mouse_over_link = false;
+	        };
+	      })(this)), 70);
 	      return document.removeEventListener('keydown', term.display);
 	    });
 	  });
@@ -134,6 +141,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Container, Livewiki,
+	  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -143,22 +151,38 @@
 	  extend(Container, superClass);
 
 	  function Container() {
-	    return this.find_or_create();
-	  }
-
-	  Container.prototype.find_or_create = function() {
-	    this.container_element = document.querySelector('#livewiki');
-	    if (!this.container_element) {
-	      this.container_element = document.createElement('div');
-	    }
-	    this.container_element.id = 'livewiki';
-	    document.querySelector('body').appendChild(this.container_element);
-	    this.container_element.addEventListener('click', (function(_this) {
+	    this.find_element = bind(this.find_element, this);
+	    var element;
+	    this.container_element = '';
+	    element = this.find_or_create();
+	    element.id = 'livewiki';
+	    element.addEventListener('click', (function(_this) {
 	      return function(e) {
 	        return e.stopPropagation();
 	      };
 	    })(this));
+	    document.querySelector('body').appendChild(element);
+	    return element;
+	  }
+
+	  Container.prototype.find_or_create = function() {
+	    this.container_element = this.find_element();
+	    if (!this.container_element) {
+	      this.container_element = document.createElement('div');
+	    }
 	    return this.container_element;
+	  };
+
+	  Container.prototype.find_element = function() {
+	    return document.querySelector('#livewiki');
+	  };
+
+	  Container.prototype.remove_container = function() {
+	    var container;
+	    container = this.find_element();
+	    if (container) {
+	      return container.remove();
+	    }
 	  };
 
 	  return Container;
@@ -253,8 +277,14 @@
 	  };
 
 	  Term.prototype.update_html = function() {
-	    this.html_element().querySelector('h1').textContent = this.headline;
-	    return this.html_element().querySelector('p').textContent = this.paragraph;
+	    var element;
+	    element = this.html_element();
+	    if (element.querySelector('h1')) {
+	      element.querySelector('h1').textContent = this.headline;
+	    }
+	    if (element.querySelector('p')) {
+	      return element.querySelector('p').textContent = this.paragraph;
+	    }
 	  };
 
 	  Term.prototype.html_element = function() {

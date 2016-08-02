@@ -10,13 +10,14 @@ ready = (fn) ->
 
 
 ready ->
+  mouse_over_link = false;
 
   document.addEventListener 'keyup', (e) =>
-    if e.which is 27
-      new Container().remove();
+    if (e.which == 27 || e.which == 91 || e.which == 93 || e.which == 17 || e.ctrlKey) && !mouse_over_link
+      Container::remove_container();
 
   document.querySelector('body').addEventListener 'click', (e) ->
-    new Container().remove();
+    Container::remove_container();
 
   a_tags = document.querySelectorAll('a[href^="/wiki/"]:not(.new)')
 
@@ -24,6 +25,8 @@ ready ->
     term = '';
 
     element.addEventListener 'mouseover', (e) ->
+      mouse_over_link = true
+
       link = e.target.getAttribute('href')
       term = new Term(link)
 
@@ -35,4 +38,8 @@ ready ->
         console.log Error
 
     element.addEventListener 'mouseout', (e) ->
+      setTimeout ( () =>
+        mouse_over_link = false
+      ), 70
+
       document.removeEventListener 'keydown', term.display
