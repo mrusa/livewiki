@@ -30,7 +30,7 @@ ready ->
       link = e.target.getAttribute('href')
       term = new Term(link)
 
-      document.addEventListener 'keydown', term.display
+      document.addEventListener 'keyup', term.display
 
       term.preload().then ((term) ->
         # console.log term
@@ -40,5 +40,5 @@ ready ->
     element.addEventListener 'mouseout', (e) ->
       setTimeout ( () =>
         mouse_over_link = false
-        document.removeEventListener 'keydown', term.display
+        document.removeEventListener 'keyup', term.display
       ), 70
