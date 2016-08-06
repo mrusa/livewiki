@@ -88,12 +88,12 @@
 	      });
 	    });
 	    return element.addEventListener('mouseout', function(e) {
-	      setTimeout(((function(_this) {
+	      return setTimeout(((function(_this) {
 	        return function() {
-	          return mouse_over_link = false;
+	          mouse_over_link = false;
+	          return document.removeEventListener('keydown', term.display);
 	        };
 	      })(this)), 70);
-	      return document.removeEventListener('keydown', term.display);
 	    });
 	  });
 	});
@@ -185,6 +185,14 @@
 	    }
 	  };
 
+	  Container.prototype.remove_terms = function() {
+	    var container;
+	    container = this.find_element();
+	    if (container) {
+	      return container.innerHTML = '';
+	    }
+	  };
+
 	  return Container;
 
 	})(Livewiki);
@@ -262,6 +270,7 @@
 	    if (this.html_element()) {
 	      return false;
 	    }
+	    Container.prototype.remove_terms();
 	    if (e.which === 91 || e.which === 93 || e.ctrlKey) {
 	      return this.append();
 	    }
