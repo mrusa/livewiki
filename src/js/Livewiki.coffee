@@ -2,7 +2,7 @@ default_options = {
   selectors: {
     heading: '#firstHeading',
     paragraph: '#mw-content-text > p',
-    image: 'img'
+    image: '.thumbimage'
   }
 }
 
