@@ -26,4 +26,8 @@ class Container extends Livewiki
     container = @find_element()
     container.remove() if container
 
+  remove_terms: () ->
+    container = @find_element()
+    container.innerHTML = '' if container
+
 module.exports = Container

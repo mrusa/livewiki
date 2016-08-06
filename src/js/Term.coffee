@@ -49,6 +49,8 @@ class Term extends Livewiki
   display: (e) =>
     return false if @html_element()
 
+    Container::remove_terms();
+    
     @append() if (e.which == 91 || e.which == 93 || e.ctrlKey)
 
   append: () ->
