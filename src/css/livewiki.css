@@ -1,51 +1,61 @@
 #livewiki {
-	width: 700px;
+	width: 350px;
 	height: auto;
 	position: fixed;
-	bottom: 0;
-	left: 50%;
-	transform: translateX(-50%);
+	right: 20px;
+	top: 20px;
 	background: #fff;
-	padding: 20px;
-	box-shadow: 0px 0 6px rgba(0,0,0,.1);
+	box-shadow: 0 2px 6px rgba(0,0,0,.1);
+	-webkit-box-shadow: 0 0px 5px rgba(0,0,0,.2);
+	border-radius: 5px;
+	border: 1px solid #E8E8E8;
+	z-index: 9999999;
+	position: fixed;
+	-webkit-transition: .3s ease-in-out;
+}
+#livewiki:empty {
+	display: none;
+}
+
+
+
+
+.term__header{
+	display: flex;
+  justify-content: space-between;
+  padding: 5px 15px;
+	background: #F4F4F4;
+	-webkit-animation: entry .5s;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
-	z-index: 9999999;
-	border: 1px solid #ECEEF1;
-	position: fixed;
-	-webkit-animation: colorchange .7s;
 }
 
-@keyframes colorchange
+@keyframes entry
 {
-	0% {background: #fff;}
-	50%   {background: #fefefe;}
-	100% {background: #fff;}
+	0%{background: #F4F4F4;}
+	50%{background: #eaeaea;}
+	100%{background: #F4F4F4;}
 }
 
-@-webkit-keyframes colorchange
+@-webkit-keyframes entry
 {
-	0% {background: #fff;}
-	50%   {background: #fefefe;}
-	100% {background: #fff;}
+	0%{background: #F4F4F4;}
+	50%{background: #eaeaea;}
+	100%{background: #F4F4F4;}
 }
 
-#livewiki h1 {
-	color: #347bff;
-	font-weight: 100;
-	padding-bottom: 15px;
-	padding-top: 0;
-	font-size: 18px;
-	border-bottom: 1px solid rgba(44,62,80,.1);
+.livewiki__logo{
+	border-bottom: 0px;
+	margin: 0;
+	padding: 0;
+	width: 60px;
 }
 
-#livewiki button{
+.term__header .header__icon{
 	border: none;
 	background: none;
-	color: rgba(52,123,255,.7);
+	color: rgba(58,58,58,.7);
 	padding: 4px 8px;
-	position: absolute;
-	right: 20px;
 	font-size: 10px;
 	font-weight: 500;
 	letter-spacing: 1px;
@@ -53,30 +63,88 @@
 	transition: .3s ease-in-out;
 }
 
-#livewiki button:hover{
+.term__header .header__icon:hover{
 	opacity: 1;
 	cursor: pointer;
 }
 
-#livewiki button:focus{
+.term__header .header__icon:focus{
 	outline: none;
 }
 
-#livewiki p {
-	color: #999;
-	line-height: 22px;
-	font-size: 13px;
-	font-weight: 500;
-	color: rgba(44,62,80,.6);
-	overflow: scroll;
-	height: 78px;
-	margin: 20px 0 0 0;
+
+
+
+
+.term__content{
+	padding: 17px 20px 20px 20px;
 }
 
-#livewiki:empty {
-	display: none;
+.term__cover{
+	width: auto;
+	overflow: hidden;
+  height: auto;
+	min-height: 50px;
+  max-height: 230px;
+	position: relative;
 }
+
+.term__cover img{
+	width: 100%;
+	position: relative;
+}
+
+.headline {
+	color: #fff;
+	font-weight: 100;
+	border-bottom: none;
+	padding: 0;
+	margin: 0 0 20px;
+	font-size: 20px;
+	letter-spacing: .5px;
+	z-index: 15;
+	position: absolute;
+	bottom: 0px;
+	left: 0;
+	margin: 0;
+	margin: 20px;
+}
+
+.headline__overlay{
+	width: 100%;
+  height: 200px;
+  position: absolute;
+  bottom: 0;
+  z-index: 10;
+	background-image: linear-gradient(-180deg, rgba(0,0,0,0.00) 62%, #140000 100%);
+}
+
+
+
+
+
+.content__paragraph {
+	color: #414141;
+	line-height: 23px;
+	font-size: 13.5px;
+	font-weight: 400;
+	color: rgba(44,62,80,.6);
+	overflow: scroll;
+	margin: 0;
+	height: auto;
+	max-height: 200px;
+}
+
+
+
+
 
 ::-webkit-scrollbar {
     display: none;
+}
+
+
+.color--black{
+	color: #2C292D;
+	margin: 20px 20px 0px 20px;
 }
