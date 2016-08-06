@@ -13,6 +13,10 @@ class Term extends Livewiki
     @displayed = false;
     @container = new Container()
 
+    @headline = '';
+    @paragraph = '';
+    @image_src = '';
+
   preload: =>
 
     new Promise( (resolve, reject) =>
@@ -32,7 +36,9 @@ class Term extends Livewiki
 
           @headline = response.querySelector(@options.selectors.heading).textContent
           @paragraph = response.querySelector(@options.selectors.paragraph).textContent
-          @image_src = response.querySelector(@options.selectors.image).getAttribute('src');
+          image = response.querySelector(@options.selectors.image)
+
+          @image_src = image.getAttribute('src') if image
 
           @update_html() if(@displayed)
 
@@ -69,7 +75,7 @@ class Term extends Livewiki
     if element.querySelector('p')
       element.querySelector('p').textContent = @paragraph
     if element.querySelector('img')
-      element.querySelector('img').src = @image_src
+      element.querySelector('img').src = @image_src if @image_src
 
   html_element: () =>
     return document.querySelector("[data-href='#{encodeURIComponent(@link)}']")
@@ -85,7 +91,13 @@ class Term extends Livewiki
 
     headline.textContent = @headline
     paragraph.textContent = @paragraph
-    image.src = @image_src
+
+    console.log @image_src, "isrc"
+
+    if @image_src
+      image.src = @image_src
+    else if @image_src in [null, '']
+      image.remove()
 
 
     close_button.addEventListener('click', @remove_term)
