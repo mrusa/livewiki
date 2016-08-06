@@ -81,6 +81,11 @@ class Term extends Livewiki
     close_button = term_template.querySelector("button")
     div = term_template.querySelector(".livewiki_term")
     headline_overlay = term_template.querySelector(".headline__overlay")
+    image = term_template.querySelector(".term__image")
+    headline = term_template.querySelector(".headline")
+    image = term_template.querySelector(".term__image")
+
+    @set_values(term_template)
 
     if @image_src
       image.src = @image_src
@@ -88,8 +93,6 @@ class Term extends Livewiki
       headline.classList.add('color--black')
       image.remove()
       headline_overlay.remove()
-
-    @set_values(term_template)
 
     close_button.addEventListener('click', @remove_term)
     div.setAttribute('data-href', encodeURIComponent(@link))

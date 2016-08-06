@@ -317,11 +317,15 @@
 	  };
 
 	  Term.prototype.to_html = function() {
-	    var close_button, div, headline_overlay, ref, term_template;
+	    var close_button, div, headline, headline_overlay, image, ref, term_template;
 	    term_template = parser.parseFromString(term_html, 'text/html');
 	    close_button = term_template.querySelector("button");
 	    div = term_template.querySelector(".livewiki_term");
 	    headline_overlay = term_template.querySelector(".headline__overlay");
+	    image = term_template.querySelector(".term__image");
+	    headline = term_template.querySelector(".headline");
+	    image = term_template.querySelector(".term__image");
+	    this.set_values(term_template);
 	    if (this.image_src) {
 	      image.src = this.image_src;
 	    } else if ((ref = this.image_src) === null || ref === '') {
@@ -329,7 +333,6 @@
 	      image.remove();
 	      headline_overlay.remove();
 	    }
-	    this.set_values(term_template);
 	    close_button.addEventListener('click', this.remove_term);
 	    div.setAttribute('data-href', encodeURIComponent(this.link));
 	    return div;
