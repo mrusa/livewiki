@@ -40,6 +40,5 @@ ready ->
     element.addEventListener 'mouseout', (e) ->
       setTimeout ( () =>
         mouse_over_link = false
+        document.removeEventListener 'keydown', term.display
       ), 70
-
-      document.removeEventListener 'keydown', term.display
