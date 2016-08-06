@@ -3,11 +3,16 @@ Livewiki = require './Livewiki.coffee'
 class Container extends Livewiki
   constructor: () ->
     @container_element = '';
+    body = document.querySelector('body')
 
     element = @find_or_create()
     element.id = 'livewiki'
     element.addEventListener 'click', (e) =>
       e.stopPropagation()
+    element.addEventListener 'mouseover', (e) =>
+      body.style.overflow = 'hidden'
+    element.addEventListener 'mouseout', (e) =>
+      body.style.overflow = 'scroll'
 
     document.querySelector('body').appendChild(element)
 
