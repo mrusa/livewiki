@@ -93,13 +93,12 @@ class Term extends Livewiki
     headline.textContent = @headline
     paragraph.textContent = @paragraph
 
-    console.log @image_src, "isrc"
-
     if @image_src
       image.src = @image_src
     else if @image_src in [null, '']
+      headline.classList.add('color--black')
       image.remove()
-
+      headline_overlay.remove()
 
     close_button.addEventListener('click', @remove_term)
     div.setAttribute('data-href', encodeURIComponent(@link))
@@ -111,7 +110,6 @@ get_parent_element = (element, tag, css_class) ->
     element = element.parentElement
 
     if element.tagName.toLowerCase() == tag.toLowerCase() and element.classList.contains(css_class)
-      console.log 1, element
       return element
 
 create_element = (element, text, css_class) ->
