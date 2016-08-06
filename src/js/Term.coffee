@@ -85,9 +85,10 @@ class Term extends Livewiki
 
     close_button = term_template.querySelector("button")
     div = term_template.querySelector(".livewiki_term")
-    headline = term_template.querySelector("h1")
-    paragraph = term_template.querySelector("p")
-    image = term_template.querySelector("img")
+    headline = term_template.querySelector(".headline")
+    headline_overlay = term_template.querySelector(".headline__overlay")
+    paragraph = term_template.querySelector(".content__paragraph")
+    image = term_template.querySelector(".term__image")
 
     headline.textContent = @headline
     paragraph.textContent = @paragraph
