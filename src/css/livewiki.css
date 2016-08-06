@@ -17,9 +17,6 @@
 	display: none;
 }
 
-
-
-
 .term__header{
 	display: flex;
   justify-content: space-between;
@@ -72,14 +69,6 @@
 	outline: none;
 }
 
-
-
-
-
-.term__content{
-	padding: 17px 20px 20px 20px;
-}
-
 .term__cover{
 	width: auto;
 	overflow: hidden;
@@ -94,7 +83,7 @@
 	position: relative;
 }
 
-.headline {
+.headline{
 	color: #fff;
 	font-weight: 100;
 	border-bottom: none;
@@ -112,18 +101,14 @@
 
 .headline__overlay{
 	width: 100%;
-  height: 200px;
+  height: 70px;
   position: absolute;
   bottom: 0;
   z-index: 10;
-	background-image: linear-gradient(-180deg, rgba(0,0,0,0.00) 62%, #140000 100%);
+	background: linear-gradient(-180deg, rgba(0,0,0,0.00) 20%, #140000 100%);
 }
 
-
-
-
-
-.content__paragraph {
+.term__content {
 	color: #414141;
 	line-height: 23px;
 	font-size: 13.5px;
@@ -133,17 +118,12 @@
 	margin: 0;
 	height: auto;
 	max-height: 200px;
+	margin: 17px 20px 20px 20px;
 }
-
-
-
-
 
 ::-webkit-scrollbar {
     display: none;
 }
-
-
 .color--black{
 	color: #2C292D;
 	margin: 20px 20px 0px 20px;

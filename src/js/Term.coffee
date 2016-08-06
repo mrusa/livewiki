@@ -103,7 +103,7 @@ class Term extends Livewiki
     headline = element.querySelector(".headline")
     headline.textContent = @headline if headline
 
-    paragraph = element.querySelector(".content__paragraph")
+    paragraph = element.querySelector(".term__content")
     paragraph.textContent = @paragraph if paragraph
 
     image = element.querySelector(".term__image")

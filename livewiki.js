@@ -344,7 +344,7 @@
 	    if (headline) {
 	      headline.textContent = this.headline;
 	    }
-	    paragraph = element.querySelector(".content__paragraph");
+	    paragraph = element.querySelector(".term__content");
 	    if (paragraph) {
 	      paragraph.textContent = this.paragraph;
 	    }
