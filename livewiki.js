@@ -205,7 +205,7 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Container, Livewiki, Term, create_element, get_parent_element, parser, term_html,
+	var Container, Livewiki, Term, get_parent_element, parser, term_html,
 	  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
@@ -222,6 +222,7 @@
 	  extend(Term, superClass);
 
 	  function Term(link) {
+	    this.set_values = bind(this.set_values, this);
 	    this.to_html = bind(this.to_html, this);
 	    this.html_element = bind(this.html_element, this);
 	    this.update_html = bind(this.update_html, this);
@@ -291,15 +292,7 @@
 	  Term.prototype.update_html = function() {
 	    var element;
 	    element = this.html_element();
-	    if (element.querySelector('h1')) {
-	      element.querySelector('h1').textContent = this.headline;
-	    }
-	    if (element.querySelector('p')) {
-	      element.querySelector('p').textContent = this.paragraph;
-	    }
-	    if (element.querySelector('img')) {
-	      return element.querySelector('img').src = this.image_src;
-	    }
+	    return this.set_values(element);
 	  };
 
 	  Term.prototype.html_element = function() {
@@ -307,19 +300,30 @@
 	  };
 
 	  Term.prototype.to_html = function() {
-	    var close_button, div, headline, image, paragraph, term_template;
+	    var close_button, div, term_template;
 	    term_template = parser.parseFromString(term_html, 'text/html');
 	    close_button = term_template.querySelector("button");
 	    div = term_template.querySelector(".livewiki_term");
-	    headline = term_template.querySelector("h1");
-	    paragraph = term_template.querySelector("p");
-	    image = term_template.querySelector("img");
-	    headline.textContent = this.headline;
-	    paragraph.textContent = this.paragraph;
-	    image.src = this.image_src;
+	    this.set_values(term_template);
 	    close_button.addEventListener('click', this.remove_term);
 	    div.setAttribute('data-href', encodeURIComponent(this.link));
 	    return div;
+	  };
+
+	  Term.prototype.set_values = function(element) {
+	    var headline, image, paragraph;
+	    headline = element.querySelector("h1");
+	    if (headline) {
+	      headline.textContent = this.headline;
+	    }
+	    paragraph = element.querySelector("p");
+	    if (paragraph) {
+	      paragraph.textContent = this.paragraph;
+	    }
+	    image = element.querySelector("img");
+	    if (image && this.image_src) {
+	      return image.src = this.image_src;
+	    }
 	  };
 
 	  return Term;
@@ -330,22 +334,9 @@
 	  while (element.parentElement) {
 	    element = element.parentElement;
 	    if (element.tagName.toLowerCase() === tag.toLowerCase() && element.classList.contains(css_class)) {
-	      console.log(1, element);
 	      return element;
 	    }
 	  }
-	};
-
-	create_element = function(element, text, css_class) {
-	  var el;
-	  el = document.createElement(element);
-	  if (text !== void 0) {
-	    el.textContent = text;
-	  }
-	  if (css_class !== void 0) {
-	    el.classList.add(css_class);
-	  }
-	  return el;
 	};
 
 	module.exports = Term;

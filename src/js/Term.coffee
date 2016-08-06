@@ -63,13 +63,7 @@ class Term extends Livewiki
 
   update_html: () =>
     element = @html_element()
-
-    if element.querySelector('h1')
-      element.querySelector('h1').textContent = @headline
-    if element.querySelector('p')
-      element.querySelector('p').textContent = @paragraph
-    if element.querySelector('img')
-      element.querySelector('img').src = @image_src
+    @set_values(element)
 
   html_element: () =>
     return document.querySelector("[data-href='#{encodeURIComponent(@link)}']")
@@ -79,37 +73,29 @@ class Term extends Livewiki
 
     close_button = term_template.querySelector("button")
     div = term_template.querySelector(".livewiki_term")
-    headline = term_template.querySelector("h1")
-    paragraph = term_template.querySelector("p")
-    image = term_template.querySelector("img")
 
-    headline.textContent = @headline
-    paragraph.textContent = @paragraph
-    image.src = @image_src
-
+    @set_values(term_template)
 
     close_button.addEventListener('click', @remove_term)
     div.setAttribute('data-href', encodeURIComponent(@link))
 
     return div
 
+  set_values: (element) =>
+    headline = element.querySelector("h1")
+    headline.textContent = @headline if headline
+
+    paragraph = element.querySelector("p")
+    paragraph.textContent = @paragraph if paragraph
+
+    image = element.querySelector("img")
+    image.src = @image_src if image && @image_src
+
 get_parent_element = (element, tag, css_class) ->
   while element.parentElement
     element = element.parentElement
 
     if element.tagName.toLowerCase() == tag.toLowerCase() and element.classList.contains(css_class)
-      console.log 1, element
       return element
-
-create_element = (element, text, css_class) ->
-  el = document.createElement(element)
-
-  if text != undefined
-    el.textContent = text
-
-  if css_class != undefined
-    el.classList.add css_class
-
-  return el
 
 module.exports = Term
