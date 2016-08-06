@@ -70,12 +70,7 @@ class Term extends Livewiki
   update_html: () =>
     element = @html_element()
 
-    if element.querySelector('h1')
-      element.querySelector('h1').textContent = @headline
-    if element.querySelector('p')
-      element.querySelector('p').textContent = @paragraph
-    if element.querySelector('img')
-      element.querySelector('img').src = @image_src if @image_src
+    @set_values(element)
 
   html_element: () =>
     return document.querySelector("[data-href='#{encodeURIComponent(@link)}']")
@@ -85,13 +80,7 @@ class Term extends Livewiki
 
     close_button = term_template.querySelector("button")
     div = term_template.querySelector(".livewiki_term")
-    headline = term_template.querySelector(".headline")
     headline_overlay = term_template.querySelector(".headline__overlay")
-    paragraph = term_template.querySelector(".content__paragraph")
-    image = term_template.querySelector(".term__image")
-
-    headline.textContent = @headline
-    paragraph.textContent = @paragraph
 
     if @image_src
       image.src = @image_src
@@ -100,10 +89,22 @@ class Term extends Livewiki
       image.remove()
       headline_overlay.remove()
 
+    @set_values(term_template)
+
     close_button.addEventListener('click', @remove_term)
     div.setAttribute('data-href', encodeURIComponent(@link))
 
     return div
+
+  set_values: (element) =>
+    headline = element.querySelector(".headline")
+    headline.textContent = @headline if headline
+
+    paragraph = element.querySelector(".content__paragraph")
+    paragraph.textContent = @paragraph if paragraph
+
+    image = element.querySelector(".term__image")
+    image.src = @image_src if image && @image_src
 
 get_parent_element = (element, tag, css_class) ->
   while element.parentElement
@@ -111,16 +112,5 @@ get_parent_element = (element, tag, css_class) ->
 
     if element.tagName.toLowerCase() == tag.toLowerCase() and element.classList.contains(css_class)
       return element
-
-create_element = (element, text, css_class) ->
-  el = document.createElement(element)
-
-  if text != undefined
-    el.textContent = text
-
-  if css_class != undefined
-    el.classList.add css_class
-
-  return el
 
 module.exports = Term
