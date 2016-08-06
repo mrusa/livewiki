@@ -1,6 +1,8 @@
+parser = new DOMParser()
+
 Livewiki = require './Livewiki.coffee'
 Container = require './Container.coffee'
-parser = new DOMParser()
+term_html = require '../html/term.html'
 
 class Term extends Livewiki
   constructor: (link) ->
@@ -73,23 +75,21 @@ class Term extends Livewiki
     return document.querySelector("[data-href='#{encodeURIComponent(@link)}']")
 
   to_html: () =>
-    fragment = document.createDocumentFragment();
+    term_template = parser.parseFromString(term_html, 'text/html')
 
-    close_button = create_element('button', 'CLOSE')
-    headline = create_element('h1', @headline)
-    paragraph = create_element('p', @paragraph)
-    div = create_element('div', undefined, 'livewiki_term')
-    image = create_element('img')
-    image.src = @image_src;
+    close_button = term_template.querySelector("button")
+    div = term_template.querySelector(".livewiki_term")
+    headline = term_template.querySelector("h1")
+    paragraph = term_template.querySelector("p")
+    image = term_template.querySelector("img")
+
+    headline.textContent = @headline
+    paragraph.textContent = @paragraph
+    image.src = @image_src
+
 
     close_button.addEventListener('click', @remove_term)
     div.setAttribute('data-href', encodeURIComponent(@link))
-
-    fragment.appendChild(close_button);
-    fragment.appendChild(image);
-    fragment.appendChild(headline);
-    fragment.appendChild(paragraph);
-    div.appendChild(fragment);
 
     return div
 

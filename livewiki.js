@@ -205,16 +205,18 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Container, Livewiki, Term, create_element, get_parent_element, parser,
+	var Container, Livewiki, Term, create_element, get_parent_element, parser, term_html,
 	  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
+
+	parser = new DOMParser();
 
 	Livewiki = __webpack_require__(1);
 
 	Container = __webpack_require__(2);
 
-	parser = new DOMParser();
+	term_html = __webpack_require__(4);
 
 	Term = (function(superClass) {
 	  extend(Term, superClass);
@@ -305,21 +307,18 @@
 	  };
 
 	  Term.prototype.to_html = function() {
-	    var close_button, div, fragment, headline, image, paragraph;
-	    fragment = document.createDocumentFragment();
-	    close_button = create_element('button', 'CLOSE');
-	    headline = create_element('h1', this.headline);
-	    paragraph = create_element('p', this.paragraph);
-	    div = create_element('div', void 0, 'livewiki_term');
-	    image = create_element('img');
+	    var close_button, div, headline, image, paragraph, term_template;
+	    term_template = parser.parseFromString(term_html, 'text/html');
+	    close_button = term_template.querySelector("button");
+	    div = term_template.querySelector(".livewiki_term");
+	    headline = term_template.querySelector("h1");
+	    paragraph = term_template.querySelector("p");
+	    image = term_template.querySelector("img");
+	    headline.textContent = this.headline;
+	    paragraph.textContent = this.paragraph;
 	    image.src = this.image_src;
 	    close_button.addEventListener('click', this.remove_term);
 	    div.setAttribute('data-href', encodeURIComponent(this.link));
-	    fragment.appendChild(close_button);
-	    fragment.appendChild(image);
-	    fragment.appendChild(headline);
-	    fragment.appendChild(paragraph);
-	    div.appendChild(fragment);
 	    return div;
 	  };
 
@@ -351,6 +350,12 @@
 
 	module.exports = Term;
 
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"livewiki_term\" data-href=\"\">\n\n  <button>CLOSE</button>\n  <img>\n  <h1></h1>\n\n  <p></p>\n</div>\n";
 
 /***/ }
 /******/ ]);
