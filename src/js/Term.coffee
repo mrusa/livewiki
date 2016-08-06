@@ -9,8 +9,6 @@ class Term extends Livewiki
     @link = link
     @loaded = false;
     @displayed = false;
-
-    @term = {}
     @container = new Container()
 
   preload: =>
@@ -32,6 +30,7 @@ class Term extends Livewiki
 
           @headline = response.querySelector(@options.selectors.heading).textContent
           @paragraph = response.querySelector(@options.selectors.paragraph).textContent
+          @image_src = response.querySelector(@options.selectors.image).getAttribute('src');
 
           @update_html() if(@displayed)
 
@@ -50,7 +49,7 @@ class Term extends Livewiki
     return false if @html_element()
 
     Container::remove_terms();
-    
+
     @append() if (e.which == 91 || e.which == 93 || e.ctrlKey)
 
   append: () ->
@@ -67,6 +66,8 @@ class Term extends Livewiki
       element.querySelector('h1').textContent = @headline
     if element.querySelector('p')
       element.querySelector('p').textContent = @paragraph
+    if element.querySelector('img')
+      element.querySelector('img').src = @image_src
 
   html_element: () =>
     return document.querySelector("[data-href='#{encodeURIComponent(@link)}']")
@@ -78,11 +79,14 @@ class Term extends Livewiki
     headline = create_element('h1', @headline)
     paragraph = create_element('p', @paragraph)
     div = create_element('div', undefined, 'livewiki_term')
+    image = create_element('img')
+    image.src = @image_src;
 
     close_button.addEventListener('click', @remove_term)
     div.setAttribute('data-href', encodeURIComponent(@link))
 
     fragment.appendChild(close_button);
+    fragment.appendChild(image);
     fragment.appendChild(headline);
     fragment.appendChild(paragraph);
     div.appendChild(fragment);

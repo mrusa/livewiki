@@ -109,7 +109,8 @@
 	default_options = {
 	  selectors: {
 	    heading: '#firstHeading',
-	    paragraph: '#mw-content-text > p'
+	    paragraph: '#mw-content-text > p',
+	    image: 'img'
 	  }
 	};
 
@@ -229,7 +230,6 @@
 	    this.link = link;
 	    this.loaded = false;
 	    this.displayed = false;
-	    this.term = {};
 	    this.container = new Container();
 	  }
 
@@ -250,6 +250,7 @@
 	            response = parser.parseFromString(resp, 'text/html');
 	            _this.headline = response.querySelector(_this.options.selectors.heading).textContent;
 	            _this.paragraph = response.querySelector(_this.options.selectors.paragraph).textContent;
+	            _this.image_src = response.querySelector(_this.options.selectors.image).getAttribute('src');
 	            if (_this.displayed) {
 	              _this.update_html();
 	            }
@@ -292,7 +293,10 @@
 	      element.querySelector('h1').textContent = this.headline;
 	    }
 	    if (element.querySelector('p')) {
-	      return element.querySelector('p').textContent = this.paragraph;
+	      element.querySelector('p').textContent = this.paragraph;
+	    }
+	    if (element.querySelector('img')) {
+	      return element.querySelector('img').src = this.image_src;
 	    }
 	  };
 
@@ -301,15 +305,18 @@
 	  };
 
 	  Term.prototype.to_html = function() {
-	    var close_button, div, fragment, headline, paragraph;
+	    var close_button, div, fragment, headline, image, paragraph;
 	    fragment = document.createDocumentFragment();
 	    close_button = create_element('button', 'CLOSE');
 	    headline = create_element('h1', this.headline);
 	    paragraph = create_element('p', this.paragraph);
 	    div = create_element('div', void 0, 'livewiki_term');
+	    image = create_element('img');
+	    image.src = this.image_src;
 	    close_button.addEventListener('click', this.remove_term);
 	    div.setAttribute('data-href', encodeURIComponent(this.link));
 	    fragment.appendChild(close_button);
+	    fragment.appendChild(image);
 	    fragment.appendChild(headline);
 	    fragment.appendChild(paragraph);
 	    div.appendChild(fragment);
