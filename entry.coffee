@@ -38,7 +38,5 @@ ready ->
         console.log Error
 
     element.addEventListener 'mouseout', (e) ->
-      setTimeout ( () =>
-        mouse_over_link = false
-        document.removeEventListener 'keyup', term.display
-      ), 70
+      mouse_over_link = false
+      document.removeEventListener 'keyup', term.display

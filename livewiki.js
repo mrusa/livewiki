@@ -88,12 +88,8 @@
 	      });
 	    });
 	    return element.addEventListener('mouseout', function(e) {
-	      return setTimeout(((function(_this) {
-	        return function() {
-	          mouse_over_link = false;
-	          return document.removeEventListener('keyup', term.display);
-	        };
-	      })(this)), 70);
+	      mouse_over_link = false;
+	      return document.removeEventListener('keyup', term.display);
 	    });
 	  });
 	});
