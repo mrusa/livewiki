@@ -1,12 +1,10 @@
 {
   "manifest_version": 2,
-
   "name": "LiveWiki",
-  "description": "Retrieve content of links to other Wikipedia pages.",
   "version": "1.0",
-  "permissions": [
-    "activeTab"
-  ],
+  "author": "M. Rusa, D. Lechthaler",
+  "homepage_url": "https://github.com/mrusa/livewiki",
+  "description": "Retrieve the first paragraph of Wikipedia links by pressing CMD or CTRL.",
   "icons": {
     "16": "icons/black/16x16.png",
     "32": "icons/black/32x32.png",
@@ -22,6 +20,9 @@
       "js": ["livewiki.js"],
       "css": ["livewiki.css"]
     }
+  ],
+  "permissions": [
+    "activeTab"
   ],
   "web_accessible_resources": [
     "spinner.gif"
