@@ -52,6 +52,8 @@
 
 	Term = __webpack_require__(3);
 
+	__webpack_require__(5);
+
 	ready = function(fn) {
 	  if (document.readyState !== 'loading') {
 	    return fn();
@@ -116,7 +118,8 @@
 	    headline_overlay: '.headline__overlay',
 	    paragraph: '.term__content',
 	    image: '.term__image',
-	    spinner: '.spinner'
+	    spinner: '.spinner',
+	    spinner_image: '.spinner__image'
 	  }
 	};
 
@@ -338,7 +341,7 @@
 	  };
 
 	  Term.prototype.to_html = function() {
-	    var close_button, cover, div, headline, headline_overlay, image, ref, term_template;
+	    var close_button, cover, div, headline, headline_overlay, image, ref, spinner_image, term_template;
 	    term_template = parser.parseFromString(term_html, 'text/html');
 	    close_button = term_template.querySelector(this.options.selectors.close_button);
 	    div = term_template.querySelector(this.options.selectors.term);
@@ -346,6 +349,8 @@
 	    headline = term_template.querySelector(this.options.selectors.headline);
 	    headline_overlay = term_template.querySelector(this.options.selectors.headline_overlay);
 	    image = term_template.querySelector(this.options.selectors.image);
+	    spinner_image = term_template.querySelector(this.options.selectors.spinner_image);
+	    spinner_image.setAttribute('src', chrome.extension.getURL('spinner.gif'));
 	    this.set_values(term_template);
 	    if (this.image_src) {
 	      image.src = this.image_src;
@@ -412,7 +417,13 @@
 /* 4 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"livewiki_term\" data-href=\"\">\n  <div class=\"term__header\">\n    <h2 class=\"livewiki__logo\">\n      <img src=\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjIuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA1MDAgODQuMyIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgNTAwIDg0LjMiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8Zz4KCTxnPgoJCTxwYXRoIGZpbGw9IiMzQTNBM0EiIGQ9Ik01LjEsNjQuOGg4LjJWMTkuMUg1LjFWNC43SDQwdjE0LjRoLTguMnY0NC43aDE1LjhWNTNINjN2MjUuMkg1LjFWNjQuOHoiLz4KCQk8cGF0aCBmaWxsPSIjM0EzQTNBIiBkPSJNNzMuNiw2NS4zaDYuN1YzOC4xaC03LjJWMjUuMmgyNXY0MC4xaDYuN3YxMi45SDczLjZWNjUuM3ogTTgwLjUsNC43aDE3LjR2MTMuOUg4MC41VjQuN3oiLz4KCQk8cGF0aCBmaWxsPSIjM0EzQTNBIiBkPSJNMTExLjksMjUuMkgxNDB2MTIuOWgtNC43bDYuMSwxOS4xYzEuMSwzLjIsMS40LDcsMS40LDdoMC40YzAsMCwwLjMtMy44LDEuNC03bDYuMS0xOS4xSDE0NlYyNS4yaDI4LjIKCQkJdjEyLjloLTZsLTE0LjcsNDAuMWgtMjFsLTE0LjctNDAuMWgtNlYyNS4yeiIvPgoJCTxwYXRoIGZpbGw9IiMzQTNBM0EiIGQ9Ik0yMDkuMywyNGMxNS44LDAsMjQuNywxMC45LDI0LjcsMjUuNmMwLDEuNy0wLjQsNS4zLTAuNCw1LjNIMjAwYzEuMyw2LjgsNi43LDkuOCwxMi4zLDkuOAoJCQljNy44LDAsMTQuOS01LDE0LjktNWw2LjUsMTIuM2MwLDAtOC41LDcuNC0yMi44LDcuNGMtMTguOSwwLTI5LjEtMTMuNy0yOS4xLTI3LjhDMTgxLjgsMzYuMSwxOTIuMywyNCwyMDkuMywyNHogTTIxNS42LDQ1LjIKCQkJYzAtNC4yLTIuOC03LjgtNi43LTcuOGMtNS4xLDAtNy42LDMuNy04LjUsNy44SDIxNS42eiIvPgoJCTxwYXRoIGZpbGw9IiMzQTNBM0EiIGQ9Ik0yMzguNyw0LjdoMzIuNlYxOGgtOC41bDYuOCwzMi42YzAuNywzLjYsMC45LDcuNywwLjksNy43aDAuNGMwLDAsMC4zLTQuMSwxLjItNy43bDExLjMtNDZoMTQuMmwxMS4zLDQ2CgkJCWMwLjksMy42LDEuMiw3LjcsMS4yLDcuN2gwLjRjMCwwLDAuMi00LjEsMC45LTcuN2w2LjgtMzIuNmgtOC41VjQuN2gzMi42VjE4aC02LjJsLTE0LjYsNjAuMWgtMjAuM0wyOTIsNDAuNQoJCQljLTAuOS0zLjYtMS4yLTguMS0xLjItOC4xaC0wLjRjMCwwLTAuMyw0LjUtMS4yLDguMWwtOS40LDM3LjZoLTIwLjNMMjQ0LjksMThoLTYuMlY0Ljd6Ii8+CgkJPHBhdGggZmlsbD0iIzNBM0EzQSIgZD0iTTM1MC43LDY1LjNoNi43VjM4LjFoLTcuMlYyNS4yaDI1djQwLjFoNi43djEyLjloLTMxLjJWNjUuM3ogTTM1Ny42LDQuN0gzNzV2MTMuOWgtMTcuNFY0Ljd6Ii8+CgkJPHBhdGggZmlsbD0iIzNBM0EzQSIgZD0iTTM5MS43LDY1LjNoNi43VjE3LjVoLTcuMlY0LjdoMjV2NDAuMmg2LjFsNS42LTYuOGgtNVYyNS4yaDI3LjZ2MTIuOWgtNi41bC05LjIsMTEuMXYwLjIKCQkJYzAsMCwyLjMsMS4xLDQuMiw0LjdsNS4yLDkuNWMwLjgsMS40LDEuOSwxLjcsMy45LDEuN2gyLjZ2MTIuOWgtMTNjLTMuOCwwLTUuOC0wLjYtNy42LTRsLTguMS0xNWMtMC45LTEuNy0yLjktMS43LTQuMi0xLjdoLTEuNQoJCQl2Ny45aDMuOHYxMi45aC0yOC4zVjY1LjN6Ii8+CgkJPHBhdGggZmlsbD0iIzNBM0EzQSIgZD0iTTQ2Mi40LDY1LjNoNi43VjM4LjFoLTcuMlYyNS4yaDI1djQwLjFoNi43djEyLjloLTMxLjJWNjUuM3ogTTQ2OS4zLDQuN2gxNy40djEzLjloLTE3LjRWNC43eiIvPgoJPC9nPgo8L2c+Cjwvc3ZnPgo=\" />\n      </h2>\n    <button class=\"header__icon term--close\">CLOSE</button>\n  </div>\n  <div class=\"term__cover\">\n    <h1 class=\"headline\"></h1>\n    <div class=\"headline__overlay\"></div>\n    <img class=\"term__image\">\n  </div>\n    <p class=\"term__content\"></p>\n</div>\n";
+	module.exports = "<div class=\"livewiki_term\" data-href=\"\">\n  <div class=\"term__header\">\n    <h2 class=\"livewiki__logo\">\n      <img src=\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjIuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA1MDAgODQuMyIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgNTAwIDg0LjMiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8Zz4KCTxnPgoJCTxwYXRoIGZpbGw9IiMzQTNBM0EiIGQ9Ik01LjEsNjQuOGg4LjJWMTkuMUg1LjFWNC43SDQwdjE0LjRoLTguMnY0NC43aDE1LjhWNTNINjN2MjUuMkg1LjFWNjQuOHoiLz4KCQk8cGF0aCBmaWxsPSIjM0EzQTNBIiBkPSJNNzMuNiw2NS4zaDYuN1YzOC4xaC03LjJWMjUuMmgyNXY0MC4xaDYuN3YxMi45SDczLjZWNjUuM3ogTTgwLjUsNC43aDE3LjR2MTMuOUg4MC41VjQuN3oiLz4KCQk8cGF0aCBmaWxsPSIjM0EzQTNBIiBkPSJNMTExLjksMjUuMkgxNDB2MTIuOWgtNC43bDYuMSwxOS4xYzEuMSwzLjIsMS40LDcsMS40LDdoMC40YzAsMCwwLjMtMy44LDEuNC03bDYuMS0xOS4xSDE0NlYyNS4yaDI4LjIKCQkJdjEyLjloLTZsLTE0LjcsNDAuMWgtMjFsLTE0LjctNDAuMWgtNlYyNS4yeiIvPgoJCTxwYXRoIGZpbGw9IiMzQTNBM0EiIGQ9Ik0yMDkuMywyNGMxNS44LDAsMjQuNywxMC45LDI0LjcsMjUuNmMwLDEuNy0wLjQsNS4zLTAuNCw1LjNIMjAwYzEuMyw2LjgsNi43LDkuOCwxMi4zLDkuOAoJCQljNy44LDAsMTQuOS01LDE0LjktNWw2LjUsMTIuM2MwLDAtOC41LDcuNC0yMi44LDcuNGMtMTguOSwwLTI5LjEtMTMuNy0yOS4xLTI3LjhDMTgxLjgsMzYuMSwxOTIuMywyNCwyMDkuMywyNHogTTIxNS42LDQ1LjIKCQkJYzAtNC4yLTIuOC03LjgtNi43LTcuOGMtNS4xLDAtNy42LDMuNy04LjUsNy44SDIxNS42eiIvPgoJCTxwYXRoIGZpbGw9IiMzQTNBM0EiIGQ9Ik0yMzguNyw0LjdoMzIuNlYxOGgtOC41bDYuOCwzMi42YzAuNywzLjYsMC45LDcuNywwLjksNy43aDAuNGMwLDAsMC4zLTQuMSwxLjItNy43bDExLjMtNDZoMTQuMmwxMS4zLDQ2CgkJCWMwLjksMy42LDEuMiw3LjcsMS4yLDcuN2gwLjRjMCwwLDAuMi00LjEsMC45LTcuN2w2LjgtMzIuNmgtOC41VjQuN2gzMi42VjE4aC02LjJsLTE0LjYsNjAuMWgtMjAuM0wyOTIsNDAuNQoJCQljLTAuOS0zLjYtMS4yLTguMS0xLjItOC4xaC0wLjRjMCwwLTAuMyw0LjUtMS4yLDguMWwtOS40LDM3LjZoLTIwLjNMMjQ0LjksMThoLTYuMlY0Ljd6Ii8+CgkJPHBhdGggZmlsbD0iIzNBM0EzQSIgZD0iTTM1MC43LDY1LjNoNi43VjM4LjFoLTcuMlYyNS4yaDI1djQwLjFoNi43djEyLjloLTMxLjJWNjUuM3ogTTM1Ny42LDQuN0gzNzV2MTMuOWgtMTcuNFY0Ljd6Ii8+CgkJPHBhdGggZmlsbD0iIzNBM0EzQSIgZD0iTTM5MS43LDY1LjNoNi43VjE3LjVoLTcuMlY0LjdoMjV2NDAuMmg2LjFsNS42LTYuOGgtNVYyNS4yaDI3LjZ2MTIuOWgtNi41bC05LjIsMTEuMXYwLjIKCQkJYzAsMCwyLjMsMS4xLDQuMiw0LjdsNS4yLDkuNWMwLjgsMS40LDEuOSwxLjcsMy45LDEuN2gyLjZ2MTIuOWgtMTNjLTMuOCwwLTUuOC0wLjYtNy42LTRsLTguMS0xNWMtMC45LTEuNy0yLjktMS43LTQuMi0xLjdoLTEuNQoJCQl2Ny45aDMuOHYxMi45aC0yOC4zVjY1LjN6Ii8+CgkJPHBhdGggZmlsbD0iIzNBM0EzQSIgZD0iTTQ2Mi40LDY1LjNoNi43VjM4LjFoLTcuMlYyNS4yaDI1djQwLjFoNi43djEyLjloLTMxLjJWNjUuM3ogTTQ2OS4zLDQuN2gxNy40djEzLjloLTE3LjRWNC43eiIvPgoJPC9nPgo8L2c+Cjwvc3ZnPgo=\" />\n      </h2>\n    <button class=\"header__icon term--close\">CLOSE</button>\n  </div>\n  <div class=\"spinner\">\n    <img class=\"spinner__image\" alt=\"Loading\">\n  </div>\n  <div class=\"term__cover element--hidden\">\n    <h1 class=\"headline\"></h1>\n    <div class=\"headline__overlay\"></div>\n    <img class=\"term__image\">\n  </div>\n    <p class=\"term__content element--hidden\"></p>\n</div>\n";
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
 
 /***/ }
 /******/ ]);
