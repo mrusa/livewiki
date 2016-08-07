@@ -22,5 +22,8 @@
       "js": ["livewiki.js"],
       "css": ["livewiki.css"]
     }
+  ],
+  "web_accessible_resources": [
+    "spinner.gif"
   ]
 }

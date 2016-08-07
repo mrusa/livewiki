@@ -84,12 +84,16 @@ class Term extends Livewiki
 
   to_html: () =>
     term_template = parser.parseFromString(term_html, 'text/html')
+
     close_button = term_template.querySelector(@options.selectors.close_button)
     div = term_template.querySelector(@options.selectors.term)
     cover = term_template.querySelector(@options.selectors.cover)
     headline = term_template.querySelector(@options.selectors.headline)
     headline_overlay = term_template.querySelector(@options.selectors.headline_overlay)
     image = term_template.querySelector(@options.selectors.image)
+    spinner_image = term_template.querySelector(@options.selectors.spinner_image)
+
+    spinner_image.setAttribute('src', chrome.extension.getURL('spinner.gif'))
 
     @set_values(term_template)
 
