@@ -104,9 +104,19 @@
 
 	default_options = {
 	  selectors: {
-	    heading: '#firstHeading',
-	    paragraph: '#mw-content-text > p',
-	    image: '.thumbimage'
+	    wikipedia: {
+	      headline: '#firstHeading',
+	      paragraph: '#mw-content-text > p',
+	      image: '.thumbimage'
+	    },
+	    term: '.livewiki_term',
+	    cover: '.term__cover',
+	    close_button: 'button',
+	    headline: '.headline',
+	    headline_overlay: '.headline__overlay',
+	    paragraph: '.term__content',
+	    image: '.term__image',
+	    spinner: '.spinner'
 	  }
 	};
 
@@ -150,6 +160,7 @@
 	  function Container() {
 	    this.find_element = bind(this.find_element, this);
 	    var body, element;
+	    Container.__super__.constructor.call(this);
 	    this.container_element = '';
 	    body = document.querySelector('body');
 	    element = this.find_or_create();
@@ -161,12 +172,18 @@
 	    })(this));
 	    element.addEventListener('mouseover', (function(_this) {
 	      return function(e) {
-	        return body.style.overflow = 'hidden';
+	        var paragraph;
+	        paragraph = document.querySelector(_this.options.selectors.paragraph);
+	        if (e.target.classList.contains(_this.options.selectors.paragraph.substr(1)) && paragraph.clientHeight >= 200) {
+	          return body.style.overflow = 'hidden';
+	        }
 	      };
 	    })(this));
 	    element.addEventListener('mouseout', (function(_this) {
 	      return function(e) {
-	        return body.style.overflow = 'scroll';
+	        if (e.target.classList.contains(_this.options.selectors.paragraph.substr(1))) {
+	          return body.style.overflow = 'scroll';
+	        }
 	      };
 	    })(this));
 	    document.querySelector('body').appendChild(element);
@@ -229,6 +246,7 @@
 	  extend(Term, superClass);
 
 	  function Term(link) {
+	    this.display_term = bind(this.display_term, this);
 	    this.set_values = bind(this.set_values, this);
 	    this.to_html = bind(this.to_html, this);
 	    this.html_element = bind(this.html_element, this);
@@ -261,15 +279,17 @@
 	          if (request.status === 200) {
 	            resp = request.responseText;
 	            response = parser.parseFromString(resp, 'text/html');
-	            _this.headline = response.querySelector(_this.options.selectors.heading).textContent;
-	            _this.paragraph = response.querySelector(_this.options.selectors.paragraph).textContent;
-	            image = response.querySelector(_this.options.selectors.image);
+	            _this.headline = response.querySelector(_this.options.selectors.wikipedia.headline).textContent;
+	            _this.paragraph = response.querySelector(_this.options.selectors.wikipedia.paragraph).textContent;
+	            image = response.querySelector(_this.options.selectors.wikipedia.image);
 	            if (image) {
 	              _this.image_src = image.getAttribute('src');
 	            }
 	            if (_this.displayed) {
 	              _this.update_html();
 	            }
+	            _this.display_term(document);
+	            _this.loaded = true;
 	            return resolve(_this);
 	          } else {
 	            return reject(Error('Term didn\'t load successfully; error code: ' + request.statusText));
@@ -294,8 +314,13 @@
 	  };
 
 	  Term.prototype.append = function() {
+	    var term;
+	    term = this.to_html();
+	    if (this.loaded) {
+	      this.display_term(term);
+	    }
 	    this.displayed = true;
-	    return this.container.appendChild(this.to_html());
+	    return this.container.appendChild(term);
 	  };
 
 	  Term.prototype.remove_term = function() {
@@ -313,17 +338,18 @@
 	  };
 
 	  Term.prototype.to_html = function() {
-	    var close_button, div, headline, headline_overlay, image, ref, term_template;
+	    var close_button, cover, div, headline, headline_overlay, image, ref, term_template;
 	    term_template = parser.parseFromString(term_html, 'text/html');
-	    close_button = term_template.querySelector("button");
-	    div = term_template.querySelector(".livewiki_term");
-	    headline_overlay = term_template.querySelector(".headline__overlay");
-	    image = term_template.querySelector(".term__image");
-	    headline = term_template.querySelector(".headline");
-	    image = term_template.querySelector(".term__image");
+	    close_button = term_template.querySelector(this.options.selectors.close_button);
+	    div = term_template.querySelector(this.options.selectors.term);
+	    cover = term_template.querySelector(this.options.selectors.cover);
+	    headline = term_template.querySelector(this.options.selectors.headline);
+	    headline_overlay = term_template.querySelector(this.options.selectors.headline_overlay);
+	    image = term_template.querySelector(this.options.selectors.image);
 	    this.set_values(term_template);
 	    if (this.image_src) {
 	      image.src = this.image_src;
+	      cover.classList.add('cover--default_size');
 	    } else if ((ref = this.image_src) === null || ref === '') {
 	      headline.classList.add('color--black');
 	      image.remove();
@@ -336,17 +362,33 @@
 
 	  Term.prototype.set_values = function(element) {
 	    var headline, image, paragraph;
-	    headline = element.querySelector(".headline");
+	    headline = element.querySelector(this.options.selectors.headline);
 	    if (headline) {
 	      headline.textContent = this.headline;
 	    }
-	    paragraph = element.querySelector(".term__content");
+	    paragraph = element.querySelector(this.options.selectors.paragraph);
 	    if (paragraph) {
 	      paragraph.textContent = this.paragraph;
 	    }
-	    image = element.querySelector(".term__image");
+	    image = element.querySelector(this.options.selectors.image);
 	    if (image && this.image_src) {
 	      return image.src = this.image_src;
+	    }
+	  };
+
+	  Term.prototype.display_term = function(element) {
+	    var cover, paragraph, spinner;
+	    cover = element.querySelector(this.options.selectors.cover);
+	    if (cover) {
+	      cover.classList.remove('element--hidden');
+	    }
+	    paragraph = element.querySelector(this.options.selectors.paragraph);
+	    if (paragraph) {
+	      paragraph.classList.remove('element--hidden');
+	    }
+	    spinner = element.querySelector(this.options.selectors.spinner);
+	    if (spinner) {
+	      return spinner.classList.add('element--hidden');
 	    }
 	  };
 
@@ -370,7 +412,7 @@
 /* 4 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"livewiki_term\" data-href=\"\">\n  <div class=\"term__header\">\n    <h2 class=\"livewiki__logo\">\n      <img src=\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjIuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA1MDAgODQuMyIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgNTAwIDg0LjMiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8Zz4KCTxnPgoJCTxwYXRoIGZpbGw9IiMzQTNBM0EiIGQ9Ik01LjEsNjQuOGg4LjJWMTkuMUg1LjFWNC43SDQwdjE0LjRoLTguMnY0NC43aDE1LjhWNTNINjN2MjUuMkg1LjFWNjQuOHoiLz4KCQk8cGF0aCBmaWxsPSIjM0EzQTNBIiBkPSJNNzMuNiw2NS4zaDYuN1YzOC4xaC03LjJWMjUuMmgyNXY0MC4xaDYuN3YxMi45SDczLjZWNjUuM3ogTTgwLjUsNC43aDE3LjR2MTMuOUg4MC41VjQuN3oiLz4KCQk8cGF0aCBmaWxsPSIjM0EzQTNBIiBkPSJNMTExLjksMjUuMkgxNDB2MTIuOWgtNC43bDYuMSwxOS4xYzEuMSwzLjIsMS40LDcsMS40LDdoMC40YzAsMCwwLjMtMy44LDEuNC03bDYuMS0xOS4xSDE0NlYyNS4yaDI4LjIKCQkJdjEyLjloLTZsLTE0LjcsNDAuMWgtMjFsLTE0LjctNDAuMWgtNlYyNS4yeiIvPgoJCTxwYXRoIGZpbGw9IiMzQTNBM0EiIGQ9Ik0yMDkuMywyNGMxNS44LDAsMjQuNywxMC45LDI0LjcsMjUuNmMwLDEuNy0wLjQsNS4zLTAuNCw1LjNIMjAwYzEuMyw2LjgsNi43LDkuOCwxMi4zLDkuOAoJCQljNy44LDAsMTQuOS01LDE0LjktNWw2LjUsMTIuM2MwLDAtOC41LDcuNC0yMi44LDcuNGMtMTguOSwwLTI5LjEtMTMuNy0yOS4xLTI3LjhDMTgxLjgsMzYuMSwxOTIuMywyNCwyMDkuMywyNHogTTIxNS42LDQ1LjIKCQkJYzAtNC4yLTIuOC03LjgtNi43LTcuOGMtNS4xLDAtNy42LDMuNy04LjUsNy44SDIxNS42eiIvPgoJCTxwYXRoIGZpbGw9IiMzQTNBM0EiIGQ9Ik0yMzguNyw0LjdoMzIuNlYxOGgtOC41bDYuOCwzMi42YzAuNywzLjYsMC45LDcuNywwLjksNy43aDAuNGMwLDAsMC4zLTQuMSwxLjItNy43bDExLjMtNDZoMTQuMmwxMS4zLDQ2CgkJCWMwLjksMy42LDEuMiw3LjcsMS4yLDcuN2gwLjRjMCwwLDAuMi00LjEsMC45LTcuN2w2LjgtMzIuNmgtOC41VjQuN2gzMi42VjE4aC02LjJsLTE0LjYsNjAuMWgtMjAuM0wyOTIsNDAuNQoJCQljLTAuOS0zLjYtMS4yLTguMS0xLjItOC4xaC0wLjRjMCwwLTAuMyw0LjUtMS4yLDguMWwtOS40LDM3LjZoLTIwLjNMMjQ0LjksMThoLTYuMlY0Ljd6Ii8+CgkJPHBhdGggZmlsbD0iIzNBM0EzQSIgZD0iTTM1MC43LDY1LjNoNi43VjM4LjFoLTcuMlYyNS4yaDI1djQwLjFoNi43djEyLjloLTMxLjJWNjUuM3ogTTM1Ny42LDQuN0gzNzV2MTMuOWgtMTcuNFY0Ljd6Ii8+CgkJPHBhdGggZmlsbD0iIzNBM0EzQSIgZD0iTTM5MS43LDY1LjNoNi43VjE3LjVoLTcuMlY0LjdoMjV2NDAuMmg2LjFsNS42LTYuOGgtNVYyNS4yaDI3LjZ2MTIuOWgtNi41bC05LjIsMTEuMXYwLjIKCQkJYzAsMCwyLjMsMS4xLDQuMiw0LjdsNS4yLDkuNWMwLjgsMS40LDEuOSwxLjcsMy45LDEuN2gyLjZ2MTIuOWgtMTNjLTMuOCwwLTUuOC0wLjYtNy42LTRsLTguMS0xNWMtMC45LTEuNy0yLjktMS43LTQuMi0xLjdoLTEuNQoJCQl2Ny45aDMuOHYxMi45aC0yOC4zVjY1LjN6Ii8+CgkJPHBhdGggZmlsbD0iIzNBM0EzQSIgZD0iTTQ2Mi40LDY1LjNoNi43VjM4LjFoLTcuMlYyNS4yaDI1djQwLjFoNi43djEyLjloLTMxLjJWNjUuM3ogTTQ2OS4zLDQuN2gxNy40djEzLjloLTE3LjRWNC43eiIvPgoJPC9nPgo8L2c+Cjwvc3ZnPgo=\" />\n      </h2>\n    <button class=\"header__icon term--close\">CLOSE</button>\n  </div>\n  <div class=\"term__cover\">\n    <h1 class=\"headline\"></h1>\n    <div class=\"headline__overlay\"></div>\n    <img class=\"term__image\">\n  </div>\n  <div class=\"term__content\">\n    <p class=\"content__paragraph\"></p>\n  </div>\n</div>\n";
+	module.exports = "<div class=\"livewiki_term\" data-href=\"\">\n  <div class=\"term__header\">\n    <h2 class=\"livewiki__logo\">\n      <img src=\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjIuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA1MDAgODQuMyIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgNTAwIDg0LjMiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8Zz4KCTxnPgoJCTxwYXRoIGZpbGw9IiMzQTNBM0EiIGQ9Ik01LjEsNjQuOGg4LjJWMTkuMUg1LjFWNC43SDQwdjE0LjRoLTguMnY0NC43aDE1LjhWNTNINjN2MjUuMkg1LjFWNjQuOHoiLz4KCQk8cGF0aCBmaWxsPSIjM0EzQTNBIiBkPSJNNzMuNiw2NS4zaDYuN1YzOC4xaC03LjJWMjUuMmgyNXY0MC4xaDYuN3YxMi45SDczLjZWNjUuM3ogTTgwLjUsNC43aDE3LjR2MTMuOUg4MC41VjQuN3oiLz4KCQk8cGF0aCBmaWxsPSIjM0EzQTNBIiBkPSJNMTExLjksMjUuMkgxNDB2MTIuOWgtNC43bDYuMSwxOS4xYzEuMSwzLjIsMS40LDcsMS40LDdoMC40YzAsMCwwLjMtMy44LDEuNC03bDYuMS0xOS4xSDE0NlYyNS4yaDI4LjIKCQkJdjEyLjloLTZsLTE0LjcsNDAuMWgtMjFsLTE0LjctNDAuMWgtNlYyNS4yeiIvPgoJCTxwYXRoIGZpbGw9IiMzQTNBM0EiIGQ9Ik0yMDkuMywyNGMxNS44LDAsMjQuNywxMC45LDI0LjcsMjUuNmMwLDEuNy0wLjQsNS4zLTAuNCw1LjNIMjAwYzEuMyw2LjgsNi43LDkuOCwxMi4zLDkuOAoJCQljNy44LDAsMTQuOS01LDE0LjktNWw2LjUsMTIuM2MwLDAtOC41LDcuNC0yMi44LDcuNGMtMTguOSwwLTI5LjEtMTMuNy0yOS4xLTI3LjhDMTgxLjgsMzYuMSwxOTIuMywyNCwyMDkuMywyNHogTTIxNS42LDQ1LjIKCQkJYzAtNC4yLTIuOC03LjgtNi43LTcuOGMtNS4xLDAtNy42LDMuNy04LjUsNy44SDIxNS42eiIvPgoJCTxwYXRoIGZpbGw9IiMzQTNBM0EiIGQ9Ik0yMzguNyw0LjdoMzIuNlYxOGgtOC41bDYuOCwzMi42YzAuNywzLjYsMC45LDcuNywwLjksNy43aDAuNGMwLDAsMC4zLTQuMSwxLjItNy43bDExLjMtNDZoMTQuMmwxMS4zLDQ2CgkJCWMwLjksMy42LDEuMiw3LjcsMS4yLDcuN2gwLjRjMCwwLDAuMi00LjEsMC45LTcuN2w2LjgtMzIuNmgtOC41VjQuN2gzMi42VjE4aC02LjJsLTE0LjYsNjAuMWgtMjAuM0wyOTIsNDAuNQoJCQljLTAuOS0zLjYtMS4yLTguMS0xLjItOC4xaC0wLjRjMCwwLTAuMyw0LjUtMS4yLDguMWwtOS40LDM3LjZoLTIwLjNMMjQ0LjksMThoLTYuMlY0Ljd6Ii8+CgkJPHBhdGggZmlsbD0iIzNBM0EzQSIgZD0iTTM1MC43LDY1LjNoNi43VjM4LjFoLTcuMlYyNS4yaDI1djQwLjFoNi43djEyLjloLTMxLjJWNjUuM3ogTTM1Ny42LDQuN0gzNzV2MTMuOWgtMTcuNFY0Ljd6Ii8+CgkJPHBhdGggZmlsbD0iIzNBM0EzQSIgZD0iTTM5MS43LDY1LjNoNi43VjE3LjVoLTcuMlY0LjdoMjV2NDAuMmg2LjFsNS42LTYuOGgtNVYyNS4yaDI3LjZ2MTIuOWgtNi41bC05LjIsMTEuMXYwLjIKCQkJYzAsMCwyLjMsMS4xLDQuMiw0LjdsNS4yLDkuNWMwLjgsMS40LDEuOSwxLjcsMy45LDEuN2gyLjZ2MTIuOWgtMTNjLTMuOCwwLTUuOC0wLjYtNy42LTRsLTguMS0xNWMtMC45LTEuNy0yLjktMS43LTQuMi0xLjdoLTEuNQoJCQl2Ny45aDMuOHYxMi45aC0yOC4zVjY1LjN6Ii8+CgkJPHBhdGggZmlsbD0iIzNBM0EzQSIgZD0iTTQ2Mi40LDY1LjNoNi43VjM4LjFoLTcuMlYyNS4yaDI1djQwLjFoNi43djEyLjloLTMxLjJWNjUuM3ogTTQ2OS4zLDQuN2gxNy40djEzLjloLTE3LjRWNC43eiIvPgoJPC9nPgo8L2c+Cjwvc3ZnPgo=\" />\n      </h2>\n    <button class=\"header__icon term--close\">CLOSE</button>\n  </div>\n  <div class=\"term__cover\">\n    <h1 class=\"headline\"></h1>\n    <div class=\"headline__overlay\"></div>\n    <img class=\"term__image\">\n  </div>\n    <p class=\"term__content\"></p>\n</div>\n";
 
 /***/ }
 /******/ ]);
