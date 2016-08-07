@@ -83,6 +83,10 @@
 	position: relative;
 }
 
+.cover--default_size {
+	height: 200px;
+}
+
 .headline{
 	color: #fff;
 	font-weight: 100;
