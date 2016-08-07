@@ -2,6 +2,8 @@ Livewiki = require './src/js/Livewiki.coffee'
 Container = require './src/js/Container.coffee'
 Term = require './src/js/Term.coffee'
 
+require './src/css/livewiki.css'
+
 ready = (fn) ->
   if document.readyState != 'loading'
     fn()

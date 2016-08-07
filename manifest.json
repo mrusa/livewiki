@@ -20,7 +20,7 @@
     {
       "matches": ["*://*.wikipedia.org/*"],
       "js": ["livewiki.js"],
-      "css": ["src/css/livewiki.css"]
+      "css": ["livewiki.css"]
     }
   ]
 }

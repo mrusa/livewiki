@@ -1,3 +1,5 @@
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 module.exports = {
   entry: "./entry.coffee",
   output: {
@@ -8,7 +10,11 @@ module.exports = {
     loaders: [
         { test: /\.coffee$/, loader: "coffee-loader" },
         { test: /\.(coffee\.md|litcoffee)$/, loader: "coffee-loader?literate" },
-        { test: /\.html$/, loader: "html" }
+        { test: /\.html$/, loader: "html" },
+        { test: /\.css$/, loader: ExtractTextPlugin.extract("css-loader") }
     ]
-  }
+  },
+  plugins: [
+    new ExtractTextPlugin("./livewiki.css")
+  ]
 };
