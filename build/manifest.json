@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+  "name": "LiveWiki",
+  "version": "1.0",
+  "author": "M. Rusa, D. Lechthaler",
+  "homepage_url": "https://github.com/mrusa/livewiki",
+  "description": "Retrieve the first paragraph of Wikipedia links by pressing CMD or CTRL.",
+  "icons": {
+    "16": "icons/black/16x16.png",
+    "32": "icons/black/32x32.png",
+    "48": "icons/black/48x48.png",
+    "128": "icons/black/128x128.png"
+  },
+  "browser_action": {
+    "default_icon": "icons/black/32x32.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.wikipedia.org/*"],
+      "js": ["livewiki.js"],
+      "css": ["livewiki.css"]
+    }
+  ],
+  "permissions": [
+    "activeTab"
+  ],
+  "web_accessible_resources": [
+    "spinner.gif"
+  ]
+}

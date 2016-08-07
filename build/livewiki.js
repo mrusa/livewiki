@@ -54,6 +54,18 @@
 
 	__webpack_require__(5);
 
+	__webpack_require__(7);
+
+	__webpack_require__(8);
+
+	__webpack_require__(9);
+
+	__webpack_require__(10);
+
+	__webpack_require__(11);
+
+	__webpack_require__(12);
+
 	ready = function(fn) {
 	  if (document.readyState !== 'loading') {
 	    return fn();
@@ -424,6 +436,43 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 6 */,
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "src/img/spinner.gif";
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "icons/black/16x16.png";
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "icons/black/32x32.png";
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "icons/black/48x48.png";
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "icons/black/128x128.png";
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "manifest.json";
 
 /***/ }
 /******/ ]);
