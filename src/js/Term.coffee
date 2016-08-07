@@ -41,6 +41,9 @@ class Term extends Livewiki
           @image_src = image.getAttribute('src') if image
 
           @update_html() if(@displayed)
+          @display_term(document)
+
+          @loaded = true
 
           resolve(@)
 
@@ -61,8 +64,12 @@ class Term extends Livewiki
     @append() if (e.which == 91 || e.which == 93 || e.ctrlKey)
 
   append: () ->
+    term = @to_html()
+    if @loaded
+      @display_term(term)
+
     @displayed = true
-    @container.appendChild(@to_html())
+    @container.appendChild(term)
 
   remove_term: () =>
     @html_element().remove()
@@ -88,6 +95,7 @@ class Term extends Livewiki
 
     if @image_src
       image.src = @image_src
+      cover.classList.add('cover--default_size')
     else if @image_src in [null, '']
       headline.classList.add('color--black')
       image.remove()
@@ -107,6 +115,16 @@ class Term extends Livewiki
 
     image = element.querySelector(@options.selectors.image)
     image.src = @image_src if image && @image_src
+
+  display_term: (element) =>
+    cover = element.querySelector(@options.selectors.cover)
+    cover.classList.remove('element--hidden') if cover
+
+    paragraph = element.querySelector(@options.selectors.paragraph)
+    paragraph.classList.remove('element--hidden') if paragraph
+
+    spinner = element.querySelector(@options.selectors.spinner)
+    spinner.classList.add('element--hidden') if spinner
 
 get_parent_element = (element, tag, css_class) ->
   while element.parentElement

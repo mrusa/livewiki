@@ -132,3 +132,18 @@
 	color: #2C292D;
 	margin: 20px 20px 0px 20px;
 }
+
+.spinner {
+	display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 0;
+}
+
+.spinner img {
+	width: 70px;
+}
+
+.element--hidden {
+	display: none;
+}
