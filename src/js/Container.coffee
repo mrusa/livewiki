@@ -2,6 +2,8 @@ Livewiki = require './Livewiki.coffee'
 
 class Container extends Livewiki
   constructor: () ->
+    super()
+
     @container_element = '';
     body = document.querySelector('body')
 
@@ -9,10 +11,13 @@ class Container extends Livewiki
     element.id = 'livewiki'
     element.addEventListener 'click', (e) =>
       e.stopPropagation()
+
     element.addEventListener 'mouseover', (e) =>
-      body.style.overflow = 'hidden'
+      paragraph = document.querySelector(@options.selectors.paragraph)
+      body.style.overflow = 'hidden' if e.target.classList.contains(@options.selectors.paragraph.substr(1)) && paragraph.clientHeight >= 200
+
     element.addEventListener 'mouseout', (e) =>
-      body.style.overflow = 'scroll'
+      body.style.overflow = 'scroll' if e.target.classList.contains(@options.selectors.paragraph.substr(1))
 
     document.querySelector('body').appendChild(element)
 
