@@ -5,10 +5,10 @@ Term = require './src/js/Term.coffee'
 require './src/css/livewiki.css'
 require './src/img/spinner.gif'
 
-require './icons/black/16x16.png'
-require './icons/black/32x32.png'
-require './icons/black/48x48.png'
-require './icons/black/128x128.png'
+require './src/icons/black/16x16.png'
+require './src/icons/black/32x32.png'
+require './src/icons/black/48x48.png'
+require './src/icons/black/128x128.png'
 
 require './manifest.json'
 

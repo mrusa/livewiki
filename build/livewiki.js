@@ -448,25 +448,25 @@
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "icons/black/16x16.png";
+	module.exports = __webpack_require__.p + "src/icons/black/16x16.png";
 
 /***/ },
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "icons/black/32x32.png";
+	module.exports = __webpack_require__.p + "src/icons/black/32x32.png";
 
 /***/ },
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "icons/black/48x48.png";
+	module.exports = __webpack_require__.p + "src/icons/black/48x48.png";
 
 /***/ },
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "icons/black/128x128.png";
+	module.exports = __webpack_require__.p + "src/icons/black/128x128.png";
 
 /***/ },
 /* 12 */
