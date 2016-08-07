@@ -34,9 +34,9 @@ class Term extends Livewiki
           resp = request.responseText;
           response = parser.parseFromString(resp, 'text/html')
 
-          @headline = response.querySelector(@options.selectors.heading).textContent
-          @paragraph = response.querySelector(@options.selectors.paragraph).textContent
-          image = response.querySelector(@options.selectors.image)
+          @headline = response.querySelector(@options.selectors.wikipedia.headline).textContent
+          @paragraph = response.querySelector(@options.selectors.wikipedia.paragraph).textContent
+          image = response.querySelector(@options.selectors.wikipedia.image)
 
           @image_src = image.getAttribute('src') if image
 
@@ -77,13 +77,12 @@ class Term extends Livewiki
 
   to_html: () =>
     term_template = parser.parseFromString(term_html, 'text/html')
-
-    close_button = term_template.querySelector("button")
-    div = term_template.querySelector(".livewiki_term")
-    headline_overlay = term_template.querySelector(".headline__overlay")
-    image = term_template.querySelector(".term__image")
-    headline = term_template.querySelector(".headline")
-    image = term_template.querySelector(".term__image")
+    close_button = term_template.querySelector(@options.selectors.close_button)
+    div = term_template.querySelector(@options.selectors.term)
+    cover = term_template.querySelector(@options.selectors.cover)
+    headline = term_template.querySelector(@options.selectors.headline)
+    headline_overlay = term_template.querySelector(@options.selectors.headline_overlay)
+    image = term_template.querySelector(@options.selectors.image)
 
     @set_values(term_template)
 
@@ -100,13 +99,13 @@ class Term extends Livewiki
     return div
 
   set_values: (element) =>
-    headline = element.querySelector(".headline")
+    headline = element.querySelector(@options.selectors.headline)
     headline.textContent = @headline if headline
 
-    paragraph = element.querySelector(".term__content")
+    paragraph = element.querySelector(@options.selectors.paragraph)
     paragraph.textContent = @paragraph if paragraph
 
-    image = element.querySelector(".term__image")
+    image = element.querySelector(@options.selectors.image)
     image.src = @image_src if image && @image_src
 
 get_parent_element = (element, tag, css_class) ->
