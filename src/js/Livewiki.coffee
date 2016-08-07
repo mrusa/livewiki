@@ -1,16 +1,16 @@
 default_options =
   selectors:
     wikipedia:
-      headline: '#firstHeading',
-      paragraph: '#mw-content-text > p',
-      image: '.thumbimage',
+      headline: '#firstHeading'
+      paragraph: '#mw-content-text > p'
+      image: '.thumbimage'
 
-    term: '.livewiki_term',
-    cover: '.term__cover',
-    close_button: 'button',
-    headline: '.headline',
-    headline_overlay: '.headline__overlay',
-    paragraph: '.term__content',
+    term: '.livewiki_term'
+    cover: '.term__cover'
+    close_button: 'button'
+    headline: '.headline'
+    headline_overlay: '.headline__overlay'
+    paragraph: '.term__content'
     image: '.term__image'
     spinner: '.spinner'
 
