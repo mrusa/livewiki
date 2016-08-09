@@ -34,10 +34,18 @@ class Term extends Livewiki
           resp = request.responseText;
           response = parser.parseFromString(resp, 'text/html')
 
-          @headline = response.querySelector(@options.selectors.wikipedia.headline).textContent
-          @paragraph = response.querySelector(@options.selectors.wikipedia.paragraph).textContent
-          image = response.querySelector(@options.selectors.wikipedia.image)
+          headline = response.querySelector(@options.selectors.wikipedia.headline)
+          @headline = if headline then headline.textContent else "Error"
 
+          paragraph = response.querySelector(@options.selectors.wikipedia.paragraph);
+
+          if paragraph && paragraph.textContent.length > 5
+            @paragraph = paragraph.textContent
+          else if !paragraph
+            paragraph = response.querySelector('p')
+            @paragraph = if paragraph then paragraph.textContent else @paragraph = "Sorry, we couldn't crawl that page."
+
+          image = response.querySelector(@options.selectors.wikipedia.image)
           @image_src = image.getAttribute('src') if image
 
           @update_html() if(@displayed)
