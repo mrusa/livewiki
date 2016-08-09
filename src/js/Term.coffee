@@ -129,6 +129,8 @@ class Term extends Livewiki
     image.src = @image_src if image && @image_src
 
   display_term: (element) =>
+    @displayed = true
+
     cover = element.querySelector(@options.selectors.cover)
     cover.classList.remove('element--hidden') if cover
 
