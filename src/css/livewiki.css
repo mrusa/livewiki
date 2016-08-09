@@ -73,7 +73,7 @@
 	width: auto;
 	overflow: hidden;
   height: auto;
-	min-height: 50px;
+	min-height: 43px;
   max-height: 230px;
 	position: relative;
 }
@@ -94,22 +94,23 @@
 	padding: 0;
 	margin: 0 0 20px;
 	font-size: 20px;
-	letter-spacing: .5px;
+	letter-spacing: .65px;
 	z-index: 15;
 	position: absolute;
 	bottom: 0px;
 	left: 0;
 	margin: 0;
-	margin: 20px;
+	margin: 20px 20px 18px 20px;
 }
 
 .headline__overlay{
 	width: 100%;
-  height: 70px;
+  height: 110px;
   position: absolute;
   bottom: 0;
   z-index: 10;
-	background: linear-gradient(-180deg, rgba(0,0,0,0.00) 20%, #140000 100%);
+	opacity: .5;
+	background: linear-gradient(-180deg, rgba(0,0,0,0.00) 0%, #140000 100%);
 }
 
 .term__content {
@@ -121,7 +122,7 @@
 	overflow: scroll;
 	margin: 0;
 	height: auto;
-	max-height: 200px;
+	max-height: 196px;
 	margin: 17px 20px 20px 20px;
 }
 
@@ -131,6 +132,7 @@
 .color--black{
 	color: #2C292D;
 	margin: 20px 20px 0px 20px;
+	position: relative;
 }
 
 .spinner {
