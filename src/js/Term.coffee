@@ -69,10 +69,11 @@ class Term extends Livewiki
 
     Container::remove_terms();
 
-    @append() if (e.which == 91 || e.which == 93 || e.ctrlKey)
+    @append() if (e.which == 91 || e.which == 93 || e.which == 17)
 
   append: () ->
     term = @to_html()
+
     if @loaded
       @display_term(term)
 
