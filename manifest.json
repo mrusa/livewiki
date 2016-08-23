@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "LiveWiki - research improvement",
   "short_name": "LiveWiki",
-  "version": "1.2",
+  "version": "1.2.1",
   "author": "M. Rusa, D. Lechthaler",
   "homepage_url": "https://github.com/mrusa/livewiki",
   "description": "Retrieve the first paragraph of Wikipedia links by pressing CMD or CTRL.",
