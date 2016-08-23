@@ -1,3 +1,5 @@
+require './src/js/polyfills'
+
 Livewiki = require './src/js/Livewiki.coffee'
 Container = require './src/js/Container.coffee'
 Term = require './src/js/Term.coffee'
