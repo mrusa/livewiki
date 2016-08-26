@@ -100,9 +100,6 @@ class Term extends Livewiki
     headline = term_template.querySelector(@options.selectors.headline)
     headline_overlay = term_template.querySelector(@options.selectors.headline_overlay)
     image = term_template.querySelector(@options.selectors.image)
-    spinner_image = term_template.querySelector(@options.selectors.spinner_image)
-
-    spinner_image.setAttribute('src', chrome.extension.getURL('spinner.gif'))
 
     @set_values(term_template)
 

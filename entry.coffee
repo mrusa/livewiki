@@ -5,7 +5,6 @@ Container = require './src/js/Container.coffee'
 Term = require './src/js/Term.coffee'
 
 require './src/css/livewiki.css'
-require './src/img/spinner.gif'
 
 require './src/icons/black/16x16.png'
 require './src/icons/black/32x32.png'

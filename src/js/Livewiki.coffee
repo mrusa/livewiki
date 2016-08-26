@@ -13,7 +13,6 @@ default_options =
     paragraph: '.term__content'
     image: '.term__image'
     spinner: '.spinner'
-    spinner_image: '.spinner__image'
 
 class Livewiki
 
