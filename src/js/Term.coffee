@@ -141,11 +141,4 @@ class Term extends Livewiki
     spinner = element.querySelector(@options.selectors.spinner)
     spinner.classList.add('element--hidden') if spinner
 
-get_parent_element = (element, tag, css_class) ->
-  while element.parentElement
-    element = element.parentElement
-
-    if element.tagName.toLowerCase() == tag.toLowerCase() and element.classList.contains(css_class)
-      return element
-
 module.exports = Term
